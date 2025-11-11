@@ -1,6 +1,30 @@
-#include <SFML/Graphics.hpp>
-//Hello GitWorld!
+#include <SFML/Graphics.hpp>//Simple Fast Multi-media Library
+#include <fstream>
 
+/*
+std::string
+std::vector
+std::map
+*/
+
+
+//namespace
+namespace globalVariables
+{
+    float grav = 9.81f;
+
+}
+
+//declaration
+class Entity {
+    int m_entityID;
+public:
+    Entity(int entityID);
+    const int getEntityID();
+
+};
+
+//definition
 class Entity 
 {
     int m_entityID;
@@ -8,7 +32,7 @@ class Entity
 
 public:
     Entity(int entityID)
-        :m_entityID(entityID)
+        :m_entityID(entityID) // Initializer lists
     {
 
 
@@ -26,8 +50,12 @@ public:
 
 
 
+
 int main()
 {
+
+    std::fstream inputStream();
+
     auto window = sf::RenderWindow(sf::VideoMode({1920u, 1080u}), "CMake SFML Project");
     window.setFramerateLimit(144);
 
