@@ -3,41 +3,8 @@
 #include "Entity.h"
 #include "Vec2.h"
 
-/*
-std::string
-std::vector
-std::map
-*/
-
-/*
-//definition
-class Entity
-{
-
-    const int m_entityID;
-    float m_scale;
-
-public:
-    Entity(int entityID)
-        :m_entityID(entityID) // Initializer lists
-    {
 
 
-    }
-    void setScale(float scale)
-    {
-        m_scale = scale;
-    }
-    const int getEntityID()
-    {
-        return m_entityID;
-    }
-
-
-};
-*/
-
-Entity myEntity(1);
 
 
 
@@ -61,8 +28,8 @@ int main()
     sf::Color newColor(255, 255, 255);
     myShape.setFillColor(newColor);
 
-
-
+    Entity myEntity(1,myShape);
+    int counterLoop = 0;
     while (window.isOpen())
     {
         while (const std::optional event = window.pollEvent())
@@ -78,15 +45,16 @@ int main()
         
         window.clear();
         //magical draw area
+        myEntity.setVecPosition(Vec2(myEntity.getVecPosition().x, myEntity.getVecPosition().y + 1) );
+        window.draw(myEntity.getShape());
 
-        window.draw(myShape);
-
-        myShape.setPosition({ myShape.getPosition().x, myShape.getPosition().y - 1});
-
+       
 
 
 
         //end magical draw area
         window.display();
+
+        counterLoop = (counterLoop +1)% 256;
     }
 }
