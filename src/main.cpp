@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>//Simple Fast Multi-media Library
+#include <string>
 #include <fstream>
 #include "Entity.h"
 #include "Vec2.h"
@@ -21,6 +22,17 @@ int main()
 
     auto window = sf::RenderWindow(sf::VideoMode({1920u, 1080u}), "CMake SFML Project");
     window.setFramerateLimit(144);
+
+
+    sf::Font bitFont;
+
+    bitFont.openFromFile("assets/8bitOperatorPlus8-Regular.ttf");
+
+    sf::Text text(bitFont);
+    
+    text.setPosition({1000, 10});
+    text.setFillColor(sf::Color(255, 255, 255));
+    
 
     int circleRadius = 64;
     sf::CircleShape myShape(circleRadius);
@@ -45,9 +57,11 @@ int main()
         
         window.clear();
         //magical draw area
+        text.setString(std::to_string(counterLoop));
+
         myEntity.setVecPosition(Vec2(myEntity.getVecPosition().x, myEntity.getVecPosition().y + 1) );
         window.draw(myEntity.getShape());
-
+        window.draw(text);
        
 
 
