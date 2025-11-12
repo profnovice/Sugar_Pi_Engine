@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>//Simple Fast Multi-media Library
+#include <iostream>
 #include <string>
 #include <fstream>
 #include "Entity.h"
@@ -22,6 +23,42 @@ int main()
 
     auto window = sf::RenderWindow(sf::VideoMode({1920u, 1080u}), "CMake SFML Project");
     window.setFramerateLimit(144);
+
+
+    std::ifstream fin("assets/config.txt");
+
+    std::vector<Entity> entityVector;
+
+    int newId;
+    int newRadius;
+    int newR;
+    int newG;
+    int newB;
+    int newPosx;
+    int newPosy;
+
+    
+    while (fin >> newId) 
+    {
+        std::cout << "read once" << std::endl;
+        
+
+        fin >> newRadius;
+        fin >> newR;
+        fin >> newG;
+        fin >> newB;
+        fin >> newPosx;
+        fin >> newPosy;
+        sf::CircleShape newCircle(newRadius);
+        newCircle.setFillColor(sf::Color(newR, newG, newB));
+        Entity newEntity(newId, newCircle);
+        newEntity.setVecPosition(Vec2(newPosx, newPosy));
+
+   
+        entityVector.push_back(newEntity);
+
+
+    }
 
 
     sf::Font bitFont;
@@ -66,6 +103,11 @@ int main()
 
         window.draw(text);
        
+        for (Entity ent : entityVector)
+        {
+            window.draw(ent.getShape());
+
+        }
 
 
 
