@@ -5,7 +5,7 @@
 #include "Entity.h"
 #include "Vec2.h"
 
-
+//Lecture 3
 /*
 Lecture 3:
 int val = 5; //stack
@@ -154,6 +154,8 @@ public:
 
 
 
+
+
 //namespace
 namespace globalVariables
 {
@@ -196,7 +198,7 @@ int main()
         fin >> newB;
         fin >> newPosx;
         fin >> newPosy;
-        sf::CircleShape newCircle(newRadius);
+        sf::CircleShape newCircle = sf::CircleShape(newRadius);
         newCircle.setFillColor(sf::Color(newR, newG, newB));
         Entity newEntity(newId, newCircle);
         newEntity.setVecPosition(Vec2(newPosx, newPosy));
@@ -224,7 +226,8 @@ int main()
     sf::Color newColor(255, 255, 255);
     myShape.setFillColor(newColor);
 
-    Entity myEntity = Entity(1,myShape);
+    Entity myEntity =  Entity(1, myShape);
+
     int counterLoop = 0;
     while (window.isOpen())
     {
@@ -244,9 +247,11 @@ int main()
         text.setString(std::to_string(counterLoop));
 
         myEntity.setVecPosition(Vec2(myEntity.getVecPosition().x, myEntity.getVecPosition().y + 1) );
-        window.draw(myEntity.getShape());
-        //window.draw(myShape); //somehow entity is being passed by value to the entity constructor ie. there's now two
 
+        window.draw(myEntity.getShape());
+        window.draw(myShape); //somehow entity is being passed by value to the entity constructor ie. there's now two
+        //sf::CircleShape specialShape = myEntity.getShape();
+        //window.draw(specialShape);
         text.setFillColor(sf::Color(counterLoop, 255 - counterLoop, .5));
 
         window.draw(text);

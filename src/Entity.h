@@ -5,13 +5,12 @@
 class Entity 
 {
 	const int m_entityID;
-	sf::CircleShape m_shape;
+	sf::CircleShape & m_shape;
 	Vec2 m_position;
 
 
 public:
 
-	Entity(int);
 
 	Entity(int,sf::CircleShape&);
 
