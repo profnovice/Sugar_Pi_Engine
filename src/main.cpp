@@ -178,7 +178,7 @@ int main()
     unsigned int windowWidth = 1920u;
     unsigned int windowHeight = 1080u;
 
-    int frameLimit = 120;
+    int frameLimit = 60;
 
     auto window = sf::RenderWindow(sf::VideoMode({windowWidth, windowHeight}), "CMake SFML Project", sf::Style::Default);
     window.setMouseCursorVisible(false);
@@ -211,7 +211,7 @@ int main()
 
     while (fin >> newId) 
     {
-        std::cout << "read once" << std::endl;
+        //std::cout << "read once" << std::endl;
         
 
         fin >> newRadius;
@@ -275,6 +275,7 @@ int main()
 
     Vec2 movementDir(0,0);
     float movementMultiplyer = .5f;
+    float sprintMultiplyer = 2.0f;
 
     int keysDown = 0;
 
@@ -436,7 +437,6 @@ int main()
 
         movementDir.x = 0;
         movementDir.y = 0;
-        movementMultiplyer = 1.0f;
 
         if (keyDown_A) 
         {
@@ -458,7 +458,8 @@ int main()
         }
         if (keyDown_Shift) 
         {
-            movementMultiplyer = 2.0f;
+            movementDir.x = movementDir.x * sprintMultiplyer;
+            movementDir.y = movementDir.y * sprintMultiplyer;
         }
 
       
@@ -476,9 +477,9 @@ int main()
         std::string deltaTimeString = std::to_string( deltaTime);
         fpsText.setString(deltaTimeString);
 
-        std::cout << deltaTimeString << std::endl;
+        //std::cout << deltaTimeString << std::endl;
 
-        myEntity.setVecPosition(Vec2(myEntity.getVecPosition().x + movementDir.x * movementMultiplyer *deltaTime, myEntity.getVecPosition().y + movementDir.y * movementMultiplyer * deltaTime) );
+        myEntity.setVecPosition(Vec2(myEntity.getVecPosition().x + movementDir.x * movementMultiplyer * deltaTime, myEntity.getVecPosition().y + movementDir.y * movementMultiplyer * deltaTime) );
 
         window.draw(ceilingSprite);
 
