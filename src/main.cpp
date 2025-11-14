@@ -175,9 +175,10 @@ int main()
 {
 
 
+    unsigned int windowWidth = 1920u;
+    unsigned int windowHeight = 1080u;
 
-
-    auto window = sf::RenderWindow(sf::VideoMode({1920u, 1080u}), "CMake SFML Project", sf::Style::Default);
+    auto window = sf::RenderWindow(sf::VideoMode({windowWidth, windowHeight}), "CMake SFML Project", sf::Style::Default);
     window.setFramerateLimit(144);
     sf::Image iconImage("assets/SFMLPracticeIcon.png");
     window.setIcon(iconImage);
@@ -251,7 +252,7 @@ int main()
     int keysDown = 0;
 
     sf::Clock clock;
-    float lastTime = 0;
+    
 
     bool keyDown_A = false;
     bool keyDown_D = false;
@@ -337,15 +338,20 @@ int main()
 
                 
             }
-            
+            else if (const auto* resized = event->getIf<sf::Event::Resized>()) 
+            {
+                windowWidth = resized->size.x;
+                windowHeight = resized->size.y;
+                window.create(sf::VideoMode({ windowWidth, windowHeight }), "CMake SFML Project", sf::Style::Default);
+            }
 
            
      
         }
 
-        float currentTime = clock.restart().asSeconds();
-        float fps = 1.f / (currentTime - lastTime);
-        lastTime = currentTime;
+        
+        
+
         movementDir.x = 0;
         movementDir.y = 0;
         movementMultiplyer = 1.0f;
@@ -380,7 +386,9 @@ int main()
         //magical draw area
         text.setString(std::to_string(counterLoop));
 
-        fpsText.setString(std::to_string(fps));
+        sf::Time elapsed = clock.getElapsedTime();
+        std::string fpsString = std::to_string( elapsed.asSeconds());
+        fpsText.setString(fpsString);
 
         myEntity.setVecPosition(Vec2(myEntity.getVecPosition().x + movementDir.x * movementMultiplyer, myEntity.getVecPosition().y + movementDir.y * movementMultiplyer) );
 
