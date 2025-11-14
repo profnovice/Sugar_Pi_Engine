@@ -178,9 +178,11 @@ int main()
     unsigned int windowWidth = 1920u;
     unsigned int windowHeight = 1080u;
 
+    int frameLimit = 120;
+
     auto window = sf::RenderWindow(sf::VideoMode({windowWidth, windowHeight}), "CMake SFML Project", sf::Style::Default);
     window.setMouseCursorVisible(false);
-    window.setFramerateLimit(144);
+    window.setFramerateLimit(frameLimit);
     sf::Image iconImage("assets/SFMLPracticeIcon.png");
     window.setIcon(iconImage);
  
@@ -265,11 +267,12 @@ int main()
     int counterLoop = 0;
 
     Vec2 movementDir(0,0);
-    float movementMultiplyer = 1.0f;
+    float movementMultiplyer = .5f;
 
     int keysDown = 0;
 
     sf::Clock clock;
+    
 
 
     sf::Texture ceilingTexture("assets/CeilingSquareAltered.png");
@@ -285,12 +288,16 @@ int main()
     bool keyDown_Shift = false;
     
 
-
+    sf::Clock deltaTimeClock;
+    float deltaTime = 0.0f;
 
     bool isPaused = false;
 
     while (window.isOpen())
     {
+        deltaTime = deltaTimeClock.getElapsedTime().asMicroseconds() / 1000.0f;
+        deltaTimeClock.restart();
+
         while (const std::optional event = window.pollEvent())
         {
             if (event->is<sf::Event::Closed>())
@@ -372,7 +379,7 @@ int main()
             }
             else if (const auto* mouseMoved = event->getIf<sf::Event::MouseMoved>())
             {
-                std::cout << "x" << (float)mousePosition.x << "y" << (float)mousePosition.y << std::endl;
+                //std::cout << "x" << (float)mousePosition.x << "y" << (float)mousePosition.y << std::endl;
                 mousePosition = mouseMoved->position;
                 mouse.setPosition({(float)mousePosition.x,(float)mousePosition.y});
 
@@ -384,7 +391,7 @@ int main()
                 windowHeight = resized->size.y;
                 window.create(sf::VideoMode({ windowWidth, windowHeight }), "CMake SFML Project", sf::Style::Default);
                 window.setMouseCursorVisible(false);
-                window.setFramerateLimit(144);
+                window.setFramerateLimit(frameLimit);
                 sf::Image iconImage("assets/SFMLPracticeIcon.png");
                 window.setIcon(iconImage);
 
@@ -444,11 +451,13 @@ int main()
         //magical draw area
         text.setString(std::to_string(counterLoop));
 
-        sf::Time elapsed = clock.getElapsedTime();
-        std::string fpsString = std::to_string( elapsed.asSeconds());
-        fpsText.setString(fpsString);
+        //sf::Time elapsed = clock.getElapsedTime();
+        std::string deltaTimeString = std::to_string( deltaTime);
+        fpsText.setString(deltaTimeString);
 
-        myEntity.setVecPosition(Vec2(myEntity.getVecPosition().x + movementDir.x * movementMultiplyer, myEntity.getVecPosition().y + movementDir.y * movementMultiplyer) );
+        std::cout << deltaTimeString << std::endl;
+
+        myEntity.setVecPosition(Vec2(myEntity.getVecPosition().x + movementDir.x * movementMultiplyer *deltaTime, myEntity.getVecPosition().y + movementDir.y * movementMultiplyer * deltaTime) );
 
         window.draw(ceilingSprite);
 
