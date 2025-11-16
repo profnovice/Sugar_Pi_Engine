@@ -179,6 +179,19 @@ public:
                 >Entity
                     >Component
 
+
+    Using Entities
+
+    void doStuff(std::vector<Entity> & entities)
+    {
+        for (auto & e : entities)
+        {
+            e.cTransform->pos += e.cTransform->velocity;
+            e.cShape->shape.setPosition(e.cTransfrom->pos);
+            window.draw(e.cShape->shape);
+        }
+    }
+
 */
 
 
