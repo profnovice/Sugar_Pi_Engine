@@ -295,6 +295,22 @@ int main()
     }
     */
 
+
+    Vec2 vec01(1, 1);
+    Vec2 vec02(1, 1);
+    Vec2 vec03(1, 1);
+
+    //vec03 += vec02 + vec01;
+    vec03.add(vec01).add(vec02);
+   // vec01 -= vec02;
+    if (vec01 != vec02) 
+    {
+        std::cout << "not equal" << std::endl;
+
+    }else{ std::cout << "equal" << std::endl; }
+    std::cout << vec03.toString() << std::endl;
+
+
     std::vector<SimpleEntity> allSimpleEntites;
 
 
@@ -332,7 +348,7 @@ int main()
    // }
 
     
-
+    /*
     for (auto& e : allSimpleEntites)
     {
         if (e.cName && e.cID && e.cTransform)
@@ -342,7 +358,7 @@ int main()
         }
 
     }
-
+    */
 
     sf::Font bitFont;
 
