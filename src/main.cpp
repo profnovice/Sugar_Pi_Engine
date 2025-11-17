@@ -7,6 +7,7 @@
 #include "Vec2.h"
 #include "Components.h"
 #include "SimpleEntity.h"
+#include "EntityManager.h"
 
 
 //Lecture 3
@@ -344,6 +345,15 @@ int main()
     simpleEntitiesType.push_back(nullEntity);
     nullEntity->cShape->setFillColor(sf::Color::Red);
    
+    EntityManager manager;
+
+    SimpEntPtr tempEntPtr= manager.addEntity("Default");
+    tempEntPtr->cShape = std::make_shared<sf::RectangleShape>(sf::Vector2f(40, 40));
+    tempEntPtr->cTransform  = std::make_shared<CTransform>(Vec2(900, 900), Vec2(5, 2.0));
+    tempEntPtr->cShape->setFillColor(sf::Color::Blue);
+    simpleEntitiesType.push_back(tempEntPtr);
+    std::cout << tempEntPtr.use_count() << std::endl;
+
     
 
    // std::cout << "cID: " << *simpEnt.cID << " Name: " << *simpEnt.cName <<  std::endl;
