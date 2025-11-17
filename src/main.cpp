@@ -313,31 +313,35 @@ int main()
 
     std::vector<SimpleEntity> allSimpleEntites;
 
+    typedef std::vector<std::shared_ptr<SimpleEntity>> EntityVector;
 
+    EntityVector simpleEntitiesType;
+   
     
 
     for (int i = 0; i < 10; ++i)
     {
-        SimpleEntity simpEnt(i,"Default");
+        std::shared_ptr<SimpleEntity> simpEnt = (std::make_shared<SimpleEntity>(i, "Default"));
 
         std::shared_ptr<std::string> simpEntName;
         simpEntName = std::make_shared<std::string>(std::string("Name") + std::to_string(i));
-        simpEnt.cName = simpEntName;
+        simpEnt->cName = simpEntName;
         CTransform intermediateTransform(Vec2(i*69%600, i * 33 % 700), Vec2(0.1 + i, 1.0 - i));
-        simpEnt.cTransform = std::make_shared<CTransform>(intermediateTransform);
-        simpEnt.cShape = std::make_shared<sf::RectangleShape>(sf::Vector2f(40, 40));
-        allSimpleEntites.push_back(simpEnt);
+        simpEnt->cTransform = std::make_shared<CTransform>(intermediateTransform);
+        simpEnt->cShape = std::make_shared<sf::RectangleShape>(sf::Vector2f(40, 40));
+        simpleEntitiesType.push_back(simpEnt);
     }
-    SimpleEntity nullEntity(512, "Default");
+    std::shared_ptr<SimpleEntity> nullEntity = (std::make_shared<SimpleEntity>(512, "Broke"));
 
+    nullEntity->cName = std::make_shared<std::string>("im so special");
+    nullEntity->cShape = std::make_shared<sf::RectangleShape>(sf::Vector2f(40, 40));
+   
+    nullEntity->cTransform = std::make_shared<CTransform>(Vec2(900, 900), Vec2(0.1, 1.0));
 
-    nullEntity.cName = std::make_shared<std::string>("im so special");
-    nullEntity.cShape = std::make_shared<sf::RectangleShape>(sf::Vector2f(40, 40));
-    nullEntity.cShape->setFillColor(sf::Color::Red);
-    nullEntity.cTransform = std::make_shared<CTransform>(Vec2(900, 900), Vec2(0.1, 1.0));
+   // allSimpleEntites.push_back(nullEntity);
 
-    allSimpleEntites.push_back(nullEntity);
-
+    simpleEntitiesType.push_back(nullEntity);
+    nullEntity->cShape->setFillColor(sf::Color::Red);
    
     
 
@@ -625,20 +629,20 @@ int main()
         window.draw(fpsText);
         
         
-       
+       /*
         for (auto & s : shared_Shapes)
         {
             window.draw(*s);
 
         }
-
-        for (auto& e : allSimpleEntites)
+        */
+        for (auto& e : simpleEntitiesType)
         {
 
-            if (e.cShape && e.cTransform)
+            if (e->cShape && e->cTransform)
             {
-                e.cShape->setPosition({e.cTransform->pos.x, e.cTransform->pos.y});
-                window.draw(*e.cShape);
+                e->cShape->setPosition({e->cTransform->pos.x, e->cTransform->pos.y});
+                window.draw(*e->cShape);
 
             }
 
