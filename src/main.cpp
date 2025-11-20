@@ -319,7 +319,7 @@ int main()
 
     EntityVector simpleEntitiesType;
    
-    
+    /*
 
     for (int i = 0; i < 20; ++i)
     {
@@ -344,8 +344,34 @@ int main()
 
     simpleEntitiesType.push_back(nullEntity);
     nullEntity->cShape->setFillColor(sf::Color::Red);
+
+    */
+
+
+    sf::Font bitFont;
+
+    bitFont.openFromFile("assets/8bitOperatorPlus8-Regular.ttf");
+
+    sf::Text text(bitFont);
    
     EntityManager manager;
+
+    for (int i = 0; i < 20; ++i)
+    {
+        SimpEntPtr simpEnt = manager.addEntity("Default");
+
+        std::shared_ptr<std::string> simpEntName;
+        simpEntName = std::make_shared<std::string>(std::string("Name") + std::to_string(i));
+        simpEnt->cName = simpEntName;
+        CTransform intermediateTransform(Vec2(i * 69 % 600, i * 33 % 700), Vec2(i * .02, -i * .02));
+        simpEnt->cTransform = std::make_shared<CTransform>(intermediateTransform);
+        simpEnt->cShape = std::make_shared<sf::RectangleShape>(sf::Vector2f(40, 40));
+        simpEnt->cDisplayTag = std::make_shared<CDisplayTag>(bitFont);
+        simpEnt->cDisplayTag->text.setString(std::to_string(simpEnt->m_id));
+        simpEnt->cDisplayTag->text.setFillColor(sf::Color::Black);
+
+    }
+
 
     SimpEntPtr tempEntPtr= manager.addEntity("Default");
     tempEntPtr->cShape = std::make_shared<sf::RectangleShape>(sf::Vector2f(40, 40));
@@ -353,6 +379,7 @@ int main()
     tempEntPtr->cShape->setFillColor(sf::Color::Blue);
     simpleEntitiesType.push_back(tempEntPtr);
     std::cout << tempEntPtr.use_count() << std::endl;
+    manager.update();
 
     
 
@@ -374,11 +401,7 @@ int main()
     }
     */
 
-    sf::Font bitFont;
-
-    bitFont.openFromFile("assets/8bitOperatorPlus8-Regular.ttf");
-
-    sf::Text text(bitFont);
+   
     
     text.setPosition({1000, 10});
     text.setFillColor(sf::Color(255, 255, 255));
@@ -647,7 +670,7 @@ int main()
 
         }
         */
-        for (auto& e : simpleEntitiesType)
+        for (auto& e : manager.getAllEntities())
         {
 
             if (e->cShape && e->cTransform)
@@ -660,9 +683,18 @@ int main()
                     e->cTransform->velocity.y = e->cTransform->velocity.y * -1.0f;
                 }
 
+                
+
                 e->cTransform->pos = e->cTransform->pos + e->cTransform->velocity * deltaTime;
                 e->cShape->setPosition({e->cTransform->pos.x, e->cTransform->pos.y});
                 window.draw(*e->cShape);
+
+            }
+            if (e->cDisplayTag && e->cTransform)
+            {
+
+                e->cDisplayTag->text.setPosition({ e->cTransform->pos.x,e->cTransform->pos.y });
+                window.draw(e->cDisplayTag->text);
 
             }
 

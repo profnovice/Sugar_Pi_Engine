@@ -2,6 +2,7 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include "SimpleEntity.h"
+#include <algorithm>
 
 typedef std::shared_ptr<SimpleEntity> SimpEntPtr;
 typedef std::vector<std::shared_ptr<SimpleEntity>> EntityVec;
@@ -13,12 +14,13 @@ class EntityManager {
 	EntityMap m_entityMap;
 	size_t m_totalEntities = 0;
 	size_t m_uniqueIdIndex = 0;
-	
+	bool is_Dead(SimpEntPtr);
 
 public:
 	EntityManager();
 	void update();
 	SimpEntPtr addEntity(const std::string &);
+	EntityVec getAllEntities();
 
 
 };

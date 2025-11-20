@@ -13,6 +13,7 @@ public:
 	std::shared_ptr<CTransform> cTransform;
 	std::shared_ptr<std::string>cName;
 	std::shared_ptr<sf::RectangleShape> cShape;
+	std::shared_ptr<CDisplayTag> cDisplayTag;
 
 	SimpleEntity(size_t, const std::string &);
 

@@ -19,3 +19,9 @@ void CTransform::print()
 {
 	std::cout << "Pos: " << pos.x << ", " << pos.y << " Vel: " << velocity.x << ", " << velocity.y << std::endl;
 }
+
+CDisplayTag::CDisplayTag(const sf::Font& font)
+	:m_font(font), text(sf::Text(m_font))
+{
+		
+}
