@@ -366,6 +366,7 @@ int main()
         CTransform intermediateTransform(Vec2(i * 69 % 600, i * 33 % 700), Vec2(i * .02, -i * .02));
         simpEnt->cTransform = std::make_shared<CTransform>(intermediateTransform);
         simpEnt->cShape = std::make_shared<sf::RectangleShape>(sf::Vector2f(40, 40));
+        simpEnt->cShape->setFillColor(sf::Color(i*10,255-i*10,(i+1*10+i*100)%256));
         simpEnt->cDisplayTag = std::make_shared<CDisplayTag>(bitFont);
         simpEnt->cDisplayTag->text.setString(std::to_string(simpEnt->m_id));
         simpEnt->cDisplayTag->text.setFillColor(sf::Color::Black);
