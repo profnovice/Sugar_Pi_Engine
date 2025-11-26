@@ -401,16 +401,16 @@ int main()
     }
 
     //std::cout << manager.catEntVec(manager.getAllEntities());
-    std::cout << manager.catMap();
+   // std::cout << manager.catMap();
     
-    for (auto e : manager.getEntitiesWithTag("I was Odd"))
-    {
+  //  for (auto e : manager.getEntitiesWithTag("I was Odd"))
+   // {
        // std::cout << e->m_id << std::endl;
-        e->m_alive = false;
-    }
+      //  e->m_alive = false;
+   // }
     
-    manager.update();
-    std::cout << manager.catMap();
+    //manager.update();
+    //std::cout << manager.catMap();
     
 
    // std::cout << "cID: " << *simpEnt.cID << " Name: " << *simpEnt.cName <<  std::endl;
@@ -629,6 +629,41 @@ int main()
             continue;
         }
         
+        manager.update();
+
+        if(counterLoop == 0)
+        {
+            int i = 20;
+            SimpEntPtr simpEnt;
+
+            if (i % 2 == 0)
+            {
+                simpEnt = manager.addEntity("I was Even");
+            }
+            else
+            {
+                simpEnt = manager.addEntity("I was Odd");
+            }
+
+
+
+            std::shared_ptr<std::string> simpEntName;
+            simpEntName = std::make_shared<std::string>(std::string("Name") + std::to_string(i));
+            simpEnt->cName = simpEntName;
+            CTransform intermediateTransform(Vec2(i * 69 % 600, i * 33 % 700), Vec2(i * .02, -i * .02));
+            simpEnt->cTransform = std::make_shared<CTransform>(intermediateTransform);
+            simpEnt->cShape = std::make_shared<sf::RectangleShape>(sf::Vector2f(40, 40));
+            simpEnt->cShape->setFillColor(sf::Color(i * 10, 255 - i * 10, (i + 1 * 10 + i * 100) % 256));
+            simpEnt->cDisplayTag = std::make_shared<CDisplayTag>(bitFont);
+            simpEnt->cDisplayTag->text.setString(std::to_string(simpEnt->m_id));
+            simpEnt->cDisplayTag->text.setFillColor(sf::Color::Black);
+
+            manager.getAllEntities().front()->m_alive = false;
+
+        }
+        
+       
+
 
         movementDir.x = 0;
         movementDir.y = 0;
