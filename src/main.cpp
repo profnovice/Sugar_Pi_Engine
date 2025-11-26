@@ -362,9 +362,12 @@ int main()
 
         if(i%2 == 0)
         {
-            simpEnt = manager.addEntity("Odd");
+            simpEnt = manager.addEntity("I was Even");
+        }else
+        {
+            simpEnt = manager.addEntity("I was Odd");
         }
-        simpEnt = manager.addEntity("Even");
+       
          
         
         std::shared_ptr<std::string> simpEntName;
@@ -389,14 +392,25 @@ int main()
     //simpleEntitiesType.push_back(tempEntPtr);
     //std::cout << tempEntPtr.use_count() << std::endl;
     
-    
-    for (auto e : manager.getEntitiesWithTag("Odd"))
+    manager.update();
+
+    //for (auto e : manager.getEntitiesWithTag("I was Odd"))
     {
+     //   std::cout << e->m_id << std::endl;
+
+    }
+
+    //std::cout << manager.catEntVec(manager.getAllEntities());
+    std::cout << manager.catMap();
+    
+    for (auto e : manager.getEntitiesWithTag("I was Odd"))
+    {
+       // std::cout << e->m_id << std::endl;
         e->m_alive = false;
     }
     
-
     manager.update();
+    std::cout << manager.catMap();
     
 
    // std::cout << "cID: " << *simpEnt.cID << " Name: " << *simpEnt.cName <<  std::endl;

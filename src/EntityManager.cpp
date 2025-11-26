@@ -41,6 +41,28 @@ EntityVec EntityManager::getEntitiesWithTag(std::string tag)
 	return m_entityMap[tag];
 }
 
+std::string const EntityManager::catMap()
+{
+	std::string outputString;
+	for (auto key : m_entityMap)
+	{
+		outputString += key.first + ": " + catEntVec(key.second) + "\n";
+
+	}
+	return outputString;
+}
+
+std::string const EntityManager::catEntVec(const EntityVec entities)
+{
+	std::string outputString;
+	for (auto e : entities)
+	{
+		//std::cout << e->m_id << ", ";
+		outputString += std::to_string(e->m_id) + ", ";
+	}
+	return outputString;
+}
+
 void EntityManager::update()
 {
 
@@ -51,7 +73,7 @@ void EntityManager::update()
 
 	//}
 	
-	for (auto e : m_queueToAdd)
+	for (auto & e : m_queueToAdd)
 	{//store in all entities vec
 		m_entities.push_back(e);
 		//store in map of tag->entityvector
@@ -61,11 +83,15 @@ void EntityManager::update()
 	}
 	const auto deadEnd = std::remove_if(m_entities.begin(), m_entities.end(), is_Dead);
 	m_entities.erase(deadEnd, m_entities.end());
-	//for (auto& e : m_entities)
+
+
+	for (auto & key : m_entityMap)
 	{
-		//std::cout << "ID: " << e->m_id << std::endl;
+		const auto secondDeadEnd = std::remove_if(key.second.begin(), key.second.end(), is_Dead);
+		key.second.erase(secondDeadEnd, key.second.end());
 
 	}
+
 	m_queueToAdd.clear();
 	
 }

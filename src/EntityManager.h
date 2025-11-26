@@ -26,6 +26,8 @@ public:
 	SimpEntPtr addEntity(const std::string &);
 	EntityVec getAllEntities();
 	EntityVec getEntitiesWithTag(std::string);
+	std::string const catMap();
+	std::string const catEntVec(const EntityVec);
 
 
 };
