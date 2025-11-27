@@ -545,6 +545,7 @@ int main()
     {
         deltaTime = deltaTimeClock.getElapsedTime().asMicroseconds() / 1000.0f;
         deltaTimeClock.restart();
+        mouseDown_LeftButton = false;
 
         while (const std::optional event = window.pollEvent())
         {
@@ -646,6 +647,7 @@ int main()
                 if (mouseClick->button == sf::Mouse::Button::Left)
                 {
                     mouseDown_LeftButton = true;
+                    std::cout << "button down" << std::endl;
                 }
 
             }
@@ -693,7 +695,7 @@ int main()
         manager.update();
 
         //std::cout<< testSimpleEntity.use_count() << std::endl;
-        if(counterLoop == 0)
+        if(mouseDown_LeftButton)
         {
             
             SimpEntPtr simpEnt;
@@ -707,7 +709,7 @@ int main()
             std::shared_ptr<std::string> simpEntName;
             simpEntName = std::make_shared<std::string>(std::string("Name") + std::to_string(i));
             simpEnt->cName = simpEntName;
-            CTransform intermediateTransform(Vec2(i * 69 % 600, i * 33 % 700), Vec2(i * .02, -i * .02));
+            CTransform intermediateTransform(Vec2(mousePosition.x, mousePosition.y), Vec2(i * .02, -i * .02));
             simpEnt->cTransform = std::make_shared<CTransform>(intermediateTransform);
             simpEnt->cShape = std::make_shared<sf::RectangleShape>(sf::Vector2f(40, 40));
             simpEnt->cShape->setFillColor(sf::Color(i * 10, 255 - i * 10, (i + 1 * 10 + i * 100) % 256));

@@ -12,9 +12,10 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
+include(InstallRequiredSystemLibraries)
 
     if (MINGW)
-        add_link_options(-static -static-libstdc++ -static-libgcc)
+       add_link_options(-static -static-libstdc++ -static-libgcc)
     elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         set(CMAKE_MSVC_RUNTIME_LIBRARY MultiThreaded$<$<CONFIG:Debug>:Debug>)
     endif()
