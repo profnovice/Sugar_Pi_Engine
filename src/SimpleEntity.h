@@ -17,5 +17,4 @@ public:
 
 	SimpleEntity(size_t, const std::string);
 
-
 };

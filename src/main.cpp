@@ -299,12 +299,40 @@ int main()
 
     Vec2 vec01(1, 1);
     Vec2 vec02(1, 1);
-    Vec2 vec03(1, 1);
+    Vec2 vec03(1, -3);
+
+
 
     //vec03 += vec02 + vec01;
-    vec03.add(vec01).add(vec02);
+   //vec03.add(vec01).add(vec02);
    // vec01 -= vec02;
+    //vec03.normalize();
+    vec02 = Vec2::normalize(vec03);
+    //std::cout << vec02.toString() <<std::endl;
 
+    const Vec2 circle1(150, 100);
+    const  Vec2 circle2(210 , 200);
+    const float circle1rad = 67;
+    const float circle2rad = 100;
+    sf::CircleShape circleShape1(circle1rad);
+    sf::CircleShape circleShape2(circle2rad);
+    circleShape1.setOrigin(sf::Vector2f(circle1rad, circle1rad));
+    circleShape2.setOrigin(sf::Vector2f( circle2rad, circle2rad));
+    circleShape1.setPosition(sf::Vector2f(circle1.x,circle1.y));
+    circleShape2.setPosition(sf::Vector2f(circle2.x, circle2.y));
+    circleShape1.setFillColor(sf::Color(255, 0, 255, 128));
+    circleShape2.setFillColor(sf::Color(255, 255, 0, 128));
+   
+    
+    if(Vec2::circleCollision(circle1,circle2,circle1rad,circle2rad))
+    {
+        std::cout << "Collision" << std::endl;
+
+
+    }
+
+    std::cout << (Vec2::circleOverlap(circle1, circle2, circle1rad, circle2rad)).toString() << std::endl;
+    //if (Vec2::sphereCollision(Vec2(circleShape1.getPosition().x, circleShape1.getPosition().y), Vec2(circleShape2.getPosition().x, circleShape2.getPosition().y), circleShape1.getRadius(), circleShape2.getRadius()))
     /*
     if (vec01 != vec02) 
     {
@@ -434,7 +462,7 @@ int main()
    
     
     text.setPosition({1000, 10});
-    text.setFillColor(sf::Color(255, 255, 255));
+   // text.setFillColor(sf::Color(255, 255, 255));
 
     sf::Text fpsText(bitFont);
     fpsText.setPosition({ 100,10 });
@@ -494,7 +522,23 @@ int main()
     sf::Clock deltaTimeClock;
     float deltaTime = 0.0f;
 
+    sf::Clock framesPerSecondClock;
+    size_t framesSinceClockTick = 0;
+
+    //SimpEntPtr testSimpleEntity = manager.addEntity("test entity");
+
     bool isPaused = false;
+
+    /*
+    hypothetical loop:
+
+    m_entityManager.update();
+    sUserInput();
+    sMovement();
+    sCollision();
+    sRender();
+    m_currentFrame++;
+    */
 
     while (window.isOpen())
     {
@@ -631,20 +675,16 @@ int main()
         
         manager.update();
 
+        //std::cout<< testSimpleEntity.use_count() << std::endl;
         if(counterLoop == 0)
         {
-            int i = 20;
+            
             SimpEntPtr simpEnt;
-
-            if (i % 2 == 0)
-            {
-                simpEnt = manager.addEntity("I was Even");
-            }
-            else
-            {
-                simpEnt = manager.addEntity("I was Odd");
-            }
-
+           
+            
+               simpEnt = manager.addEntity("I'm new");
+         
+               int i = simpEnt->m_id % 25;
 
 
             std::shared_ptr<std::string> simpEntName;
@@ -658,7 +698,13 @@ int main()
             simpEnt->cDisplayTag->text.setString(std::to_string(simpEnt->m_id));
             simpEnt->cDisplayTag->text.setFillColor(sf::Color::Black);
 
+
+            std::cout << simpEnt->m_id << " created, ";
+           
             manager.getAllEntities().front()->m_alive = false;
+            std::cout << manager.getAllEntities().front()->m_id << " marked for death " << std::endl;
+
+
 
         }
         
@@ -698,7 +744,7 @@ int main()
         window.clear();
         //magical draw area
 
-        text.setString(std::to_string(counterLoop));
+        
 
         std::string clockString = std::to_string(clock.getElapsedTime().asSeconds());
         clockText.setString(clockString);
@@ -722,9 +768,7 @@ int main()
         //window.draw(myShape); //somehow entity is being passed by value to the entity constructor ie. there's now two
         //sf::CircleShape specialShape = myEntity.getShape();
         //window.draw(specialShape);
-        text.setFillColor(sf::Color(counterLoop, 255 - counterLoop, .5));
-
-        window.draw(text);
+        
         window.draw(fpsText);
         
         
@@ -769,6 +813,23 @@ int main()
 
 
 
+        framesSinceClockTick++;
+        float elapsedSeconds = framesPerSecondClock.getElapsedTime().asSeconds();
+        if (elapsedSeconds >= 1.0f)
+        {
+            text.setString(std::to_string(framesSinceClockTick / elapsedSeconds));
+            float colorCodedfps = std::clamp((framesSinceClockTick / elapsedSeconds) / frameLimit * 255.0f, 0.0f, 255.0f);
+            text.setFillColor(sf::Color(255 - colorCodedfps, colorCodedfps, .5));
+            framesPerSecondClock.restart();
+            framesSinceClockTick = 0;
+
+            
+
+        }
+        window.draw(circleShape1);
+        window.draw(circleShape2);
+
+        window.draw(text);
 
         //end magical draw area
         window.display();

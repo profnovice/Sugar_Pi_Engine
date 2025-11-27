@@ -81,14 +81,16 @@ void EntityManager::update()
 		m_entityMap[e->m_tag].push_back(e);
 
 	}
+
+
 	const auto deadEnd = std::remove_if(m_entities.begin(), m_entities.end(), is_Dead);
 	m_entities.erase(deadEnd, m_entities.end());
 
 
 	for (auto & key : m_entityMap)
 	{
-		const auto secondDeadEnd = std::remove_if(key.second.begin(), key.second.end(), is_Dead);
-		key.second.erase(secondDeadEnd, key.second.end());
+		const auto deadEnd = std::remove_if(key.second.begin(), key.second.end(), is_Dead);
+		key.second.erase(deadEnd, key.second.end());
 
 	}
 
