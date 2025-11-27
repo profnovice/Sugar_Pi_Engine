@@ -89,7 +89,7 @@ Vec2 const Vec2::getVelocityFromSpeedAndAngle(const float speed, const float ang
 
 void Vec2::normalize()
 {
-	float magnitude = std::sqrtf(x * x + y * y);
+	float magnitude = std::sqrt(x * x + y * y);
 	x = x / magnitude;
 	y = y / magnitude;
 	
@@ -118,7 +118,7 @@ Vec2 Vec2::circleOverlap(const Vec2& cp1, const Vec2& cp2, float r1, float r2)
 	{
 		return Vec2(0, 0);
 	}
-	float dist = std::sqrtf(distSq);
+	float dist = std::sqrt(distSq);
 	if (dist == 0.0f)
 	{
 		return Vec2(radii, 0);
@@ -130,7 +130,7 @@ Vec2 Vec2::circleOverlap(const Vec2& cp1, const Vec2& cp2, float r1, float r2)
 
 Vec2 const Vec2::normalize(const Vec2& in) 
 {
-	float magnitude = std::sqrtf(in.x * in.x + in.y * in.y);
+	float magnitude = std::sqrt(in.x * in.x + in.y * in.y);
 	return Vec2(in.x/magnitude,in.y/magnitude);
 }
 
