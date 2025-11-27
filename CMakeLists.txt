@@ -20,7 +20,7 @@ FetchContent_Declare(SFML
     EXCLUDE_FROM_ALL
     SYSTEM)
 
-  if(NOT DBUILD_SHARED_LIBS)
+  if(NOT BUILD_SHARED_LIBS)
         set(SFML_USE_STATIC_STD_LIBS ON CACHE BOOL "Link SFML with static standard libraries" FORCE)
   endif()
 
