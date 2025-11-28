@@ -1,19 +1,18 @@
 #include "Components.h"
 
 CTransform::CTransform()
-{
-	pos = Vec2(0, 0);
-	velocity = Vec2(0, 0);
-}
+	:pos({ 0.0f,0.0f }), velocity({ 0.0f,0.0f }), angle(0.0f) {}
+
+CTransform::CTransform(const Vec2 inPos)
+	:pos(inPos), velocity({ 0.0f,0.0f }), angle(0.0f) {}
 
 CTransform::CTransform(const Vec2 inPos, const Vec2 inVelocity)
-	:pos(inPos), velocity(inVelocity)
-{
-}
+	:pos(inPos), velocity(inVelocity), angle(0.0f){}
 
-CTransform::~CTransform()
-{
-}
+CTransform::CTransform(const Vec2 inPos, const Vec2 inVelocity, float a)
+	:pos(inPos), velocity(inVelocity), angle(a){}
+
+CTransform::~CTransform(){}
 
 void CTransform::print()
 {
@@ -21,7 +20,16 @@ void CTransform::print()
 }
 
 CDisplayTag::CDisplayTag(const sf::Font& font)
-	:text(sf::Text(font))
-{
-		
-}
+	:text(sf::Text(font)){}
+
+CShape::CShape(float radius, int edges, const sf::Color& fill, const sf::Color& outline, float thickness)
+		:circle(radius, edges)
+	{
+		circle.setFillColor(fill);
+		circle.setOutlineColor(outline);
+		circle.setOutlineThickness(thickness);
+		circle.setOrigin({ radius, radius });
+	}
+
+CCollision::CCollision(float r)
+	:radius(r) {}
