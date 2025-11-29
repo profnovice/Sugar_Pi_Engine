@@ -1,17 +1,17 @@
-## Ongoing c++ simple game engine from scratch using CMake SFML Project Template
+# Ongoing c++ simple game engine from scratch using CMake SFML Project Template
 
 Learning process with C++, SFML, CMake, etc.
 
 ## Git commit format
 
-# Example:
+### Example:
 
 feat(src): Add new jump ability 
 
 Testers were bored while in the air so this flip ability should 
 give them something to do.
 
-# Flags:
+### Flags:
 
 chore: typos, documentation
 style: reformatting, rearranging
@@ -21,14 +21,14 @@ refactor: making it better without changing what it does
 test: check to see that things run correctly
 explore: experiment with libraries and new features
 
-# Areas
+### Areas
 
 git: workflows 
 docs: README and LICENSE etc.
 src: source code
 assets: textures, config, .ttf etc
 
-# Creed: 
+### Creed: 
 
 Separate subject from body with a blank line
 Limit the subject line to 50 characters
