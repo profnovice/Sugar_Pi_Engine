@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <memory>
 #include <string>
 #include <SFML/Graphics.hpp>
@@ -18,6 +19,7 @@ class EntityManager {
 	EntityMap m_entityMap;
 	size_t m_totalEntities = 0;
 	size_t m_uniqueIdIndex = 0;
+	int recPlacement = 0;
 	
 
 public:
@@ -25,8 +27,9 @@ public:
 	void update();
 	SimpEntPtr addEntity();
 	SimpEntPtr addEntity(const std::string &);
-	EntityVec getAllEntities();
-	EntityVec getEntitiesWithTag(std::string);
+	SimpEntPtr addRec();
+	const EntityVec & getAllEntities();
+	const EntityVec & getEntitiesWithTag(std::string);
 	std::string const catMap();
 	std::string const catEntVec(const EntityVec);
 

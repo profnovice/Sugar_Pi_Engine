@@ -37,12 +37,24 @@ SimpEntPtr EntityManager::addEntity(const std::string & tag)
 	return e;
 }
 
-EntityVec EntityManager::getAllEntities()
+SimpEntPtr EntityManager::addRec()
+{
+	SimpEntPtr e = std::shared_ptr<SimpleEntity>(new SimpleEntity(m_uniqueIdIndex++, "Rectangle")); m_totalEntities++;
+	e->cShape = std::make_shared<sf::RectangleShape>();
+	e->cShape->setSize({ 64,64 });
+	e->cShape->setPosition({ 64.0f * (recPlacement % 20),64 });
+	e->cShape->setFillColor(sf::Color::Red);
+	m_queueToAdd.push_back(e);
+	recPlacement++;
+	return e;
+}
+
+const EntityVec & EntityManager::getAllEntities()
 {
 	return m_entities;
 }
 
-EntityVec EntityManager::getEntitiesWithTag(std::string tag)
+const EntityVec & EntityManager::getEntitiesWithTag(std::string tag)
 {
 	return m_entityMap[tag];
 }
@@ -71,7 +83,7 @@ std::string const EntityManager::catEntVec(const EntityVec entities)
 
 void EntityManager::update()
 {
-
+	
 
 	
 	for (auto & e : m_queueToAdd)
@@ -85,6 +97,7 @@ void EntityManager::update()
 
 
 	const auto deadEnd = std::remove_if(m_entities.begin(), m_entities.end(), is_Dead);
+	m_totalEntities -= std::distance(deadEnd, m_entities.end());
 	m_entities.erase(deadEnd, m_entities.end());
 
 
@@ -96,6 +109,7 @@ void EntityManager::update()
 	}
 
 	m_queueToAdd.clear();
+	std::cout << m_totalEntities << ": Entities" << std::endl;
 	
 }
 
