@@ -103,10 +103,12 @@ int main()
     ptr->cShape->setPosition({ 500,500 });
     ptr->cShape->setSize({ 500,500 });
     manager.update();
+    manager.getAllEntities().front()->cShape->setFillColor(sf::Color::Blue);
 
 
     while (window.isOpen())
     {
+        manager.update();
         deltaTime = deltaTimeClock.getElapsedTime().asMicroseconds() / 1000.0f;
         deltaTimeClock.restart();
         mouseDown_LeftButton = false;
@@ -296,7 +298,18 @@ int main()
         window.draw(clockText);
         window.draw(fpsText);
 
-        window.draw(*manager.getAllEntities()[0]->cShape);
+        manager.addRec();
+        EntityVec recVec = manager.getEntitiesWithTag("Rectangle");
+        if (recVec.size() > 0)
+        {
+            window.draw(*recVec.front()->cShape);
+            recVec.front()->destroy();
+        }
+        
+
+        
+        
+        window.draw(*manager.getAllEntities().front()->cShape);
 
         framesSinceClockTick++;
         float elapsedSeconds = framesPerSecondClock.getElapsedTime().asSeconds();
