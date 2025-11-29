@@ -17,8 +17,12 @@ public:
 	
 	std::shared_ptr<CTransform> cTransform;
 	std::shared_ptr<std::string>cName;
-	std::shared_ptr<sf::RectangleShape> cShape;
+	std::shared_ptr<sf::RectangleShape> cRectShape;
+	std::shared_ptr<CShape> cShape;
 	std::shared_ptr<CDisplayTag> cDisplayTag;
+	std::shared_ptr<CCollision> cCollision;
+	std::shared_ptr<cSprite> cSprite;
+	std::shared_ptr<cRidgedBody> cRidgedBody;
 
 	bool isAlive() const;
 	const std::string& getTag() const;
