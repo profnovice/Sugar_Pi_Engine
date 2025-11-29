@@ -17,11 +17,12 @@ chore: typos, documentation
 style: reformatting, rearranging
 feat: new feature, system
 fix: solution to an issue
-refactor: making it better without changing what it does
+refac: making it better without changing what it does
 test: check to see that things run correctly
-explore: experiment with libraries and new features
+explr: experiment with libraries and new features
+clean: remove unnecessary code or comments
 
-### Areas
+### Areas:
 
 git: workflows 
 docs: README and LICENSE etc.
