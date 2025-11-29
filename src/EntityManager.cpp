@@ -40,10 +40,10 @@ SimpEntPtr EntityManager::addEntity(const std::string & tag)
 SimpEntPtr EntityManager::addRec()
 {
 	SimpEntPtr e = std::shared_ptr<SimpleEntity>(new SimpleEntity(m_uniqueIdIndex++, "Rectangle")); m_totalEntities++;
-	e->cShape = std::make_shared<sf::RectangleShape>();
-	e->cShape->setSize({ 64,64 });
-	e->cShape->setPosition({ 64.0f * (recPlacement % 20),64 });
-	e->cShape->setFillColor(sf::Color::Red);
+	e->cRectShape = std::make_shared<sf::RectangleShape>();
+	e->cRectShape->setSize({ 64,64 });
+	e->cRectShape->setPosition({ 64.0f * (recPlacement % 20),64 });
+	e->cRectShape->setFillColor(sf::Color::Red);
 	m_queueToAdd.push_back(e);
 	recPlacement++;
 	return e;
