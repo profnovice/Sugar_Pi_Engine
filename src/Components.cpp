@@ -1,16 +1,16 @@
 #include "Components.h"
 
 CTransform::CTransform()
-	:pos({ 0.0f,0.0f }), velocity({ 0.0f,0.0f }), angle(0.0f) {}
+	:pos({ 0.0f,0.0f }), velocity({ 0.0f,0.0f }), angle(0.0f), previousPos({ 0.0f,0.0f }){}
 
 CTransform::CTransform(const Vec2 inPos)
-	:pos(inPos), velocity({ 0.0f,0.0f }), angle(0.0f) {}
+	:pos(inPos), velocity({ 0.0f,0.0f }), angle(0.0f), previousPos({ 0.0f,0.0f }) {}
 
 CTransform::CTransform(const Vec2 inPos, const Vec2 inVelocity)
-	:pos(inPos), velocity(inVelocity), angle(0.0f){}
+	:pos(inPos), velocity(inVelocity), angle(0.0f), previousPos({ 0.0f,0.0f }){}
 
 CTransform::CTransform(const Vec2 inPos, const Vec2 inVelocity, float a)
-	:pos(inPos), velocity(inVelocity), angle(a){}
+	:pos(inPos), velocity(inVelocity), angle(a), previousPos({ 0.0f,0.0f }){}
 
 CTransform::~CTransform(){}
 
