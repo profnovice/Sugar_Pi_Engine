@@ -10,6 +10,11 @@
 #include "EntityManager.h"
 
 
+template <typename T>
+T custom_lerp(T a, T b, T t) {
+    return a + t * (b - a);
+}
+
 int main()
 {
     unsigned int windowWidth = 1920u;
@@ -32,19 +37,19 @@ int main()
     mouse.setFillColor(sf::Color(64, 64, 64));
     mouse.setOutlineColor(sf::Color(255, 255, 255));
 
-    std::ifstream fin("assets/config.txt");
+    std::ifstream fin("assets/simconfig.txt");
 
     sf::Vector2i mousePosition;
 
     const sf::Font bitFont("assets/8bitOperatorPlus8-Regular.ttf");
 
-    sf::Text text(bitFont);
+    sf::Text framesPerSecondText(bitFont);
 
-    text.setPosition({1000, 10});
+    framesPerSecondText.setPosition({ (float)windowWidth / 2, 10});
 
-    sf::Text fpsText(bitFont);
-    fpsText.setPosition({ 100,10 });
-    fpsText.setFillColor(sf::Color(255, 255, 255));
+    sf::Text frameTimeText(bitFont);
+    frameTimeText.setPosition({ 10,10 });
+    frameTimeText.setFillColor(sf::Color(255, 255, 255));
 
 
     sf::Text pauseText(bitFont);
@@ -59,7 +64,7 @@ int main()
     sf::Text clockText(bitFont);
     clockText.setString("Clock");
     clockText.setFillColor(sf::Color(255, 255, 255));
-    clockText.setPosition({ (float)windowWidth-200, 100.0f});
+    clockText.setPosition({ (float)windowWidth-200, 10});
 
     int counterLoop = 0;
 
@@ -98,12 +103,47 @@ int main()
 
     EntityManager manager;
 
-    SimpEntPtr physicsEntity = manager.addEntity("Physics");
-    physicsEntity->cTransform = std::make_shared<CTransform>(Vec2(100,100));
-    physicsEntity->cShape = std::make_shared<CShape>(64,12,sf::Color::Blue, sf::Color::Red,3.0f);
-    physicsEntity->cCollision = std::make_shared<CCollision>(64);
-    physicsEntity->cRidgedBody = std::make_shared<CRidgedBody>();
-    physicsEntity->cRidgedBody->useGravity = true;
+    
+    int iMax = 40;
+	int jMax = 10;
+    int gravIn = 1;
+    float mouseForce = 1.0f;
+    bool grav = true;
+    if (fin) {
+        fin >> iMax;
+        fin >> jMax;
+        fin >> mouseForce;
+        fin >> gravIn;
+        grav = gravIn;
+        std::cout << iMax << " " << jMax << " " << mouseForce <<" " << gravIn;
+    }
+    
+    
+
+    for(int i =0; i < iMax; i++)
+    {
+        for(int j =0; j < jMax; j++)
+        {
+
+
+            int radius = 16;
+            SimpEntPtr physicsEntity = manager.addEntity("Physics");
+            physicsEntity->cTransform = std::make_shared<CTransform>(Vec2(windowWidth /iMax*i +20, windowWidth / iMax *j + 100));
+            physicsEntity->cTransform->previousPos = physicsEntity->cTransform->pos;
+            sf::Color specialColor
+            (
+                custom_lerp(0.0f,255.0f,(float)i/(float)iMax),
+                255- custom_lerp(0.0f, 255.0f, (float)j / (float)jMax),
+                255 - (custom_lerp(0.0f, 255.0f, (float)i / (float)iMax)+(255 - custom_lerp(0.0f, 255.0f, (float)j / (float)jMax)))/2
+            );
+            physicsEntity->cShape = std::make_shared<CShape>(radius, 12, specialColor,sf::Color::Red, 3.0f);
+            physicsEntity->cCollision = std::make_shared<CCollision>(radius);
+            physicsEntity->cRidgedBody = std::make_shared<CRidgedBody>();
+            physicsEntity->cRidgedBody->mass = .25;
+            physicsEntity->cRidgedBody->useGravity = grav;
+		}
+        
+	}
 
     manager.update();
 
@@ -237,6 +277,8 @@ int main()
                 sf::Image iconImage("assets/SFMLPracticeIcon.png");
                 window.setIcon(iconImage);
                 pauseText.setPosition({ (float)windowWidth / 2 , (float)windowHeight / 2 });
+                clockText.setPosition({ (float)windowWidth - 200, 10 });
+                framesPerSecondText.setPosition({ (float)windowWidth / 2, 10 });
             }
 
         }
@@ -293,12 +335,13 @@ int main()
         clockText.setString(clockString);
 
         std::string deltaTimeString = std::to_string( deltaTime);
-        fpsText.setString(deltaTimeString);
-        window.draw(ceilingSprite);
+        frameTimeText.setString(deltaTimeString);
+        //window.draw(ceilingSprite);
         window.draw(mouse);
         window.draw(clockText);
-        window.draw(fpsText);
-
+        window.draw(frameTimeText);
+       
+        /*
         manager.addRec();
         EntityVec recVec = manager.getEntitiesWithTag("Rectangle");
         if (recVec.size() > 0)
@@ -306,15 +349,21 @@ int main()
             recVec.front()->destroy();
             window.draw(*recVec.front()->cRectShape);
         }
-        
+        */
 
         framesSinceClockTick++;
         float elapsedSeconds = framesPerSecondClock.getElapsedTime().asSeconds();
         if (elapsedSeconds >= 1.0f)
         {
-            text.setString(std::to_string(framesSinceClockTick / elapsedSeconds));
+            framesPerSecondText.setString
+            (
+                std::to_string
+                ( 
+                    (int)(framesSinceClockTick / elapsedSeconds)
+                )
+            );
             float colorCodedfps = std::clamp((framesSinceClockTick / elapsedSeconds) / frameLimit * 255.0f, 0.0f, 255.0f);
-            text.setFillColor(sf::Color(255 - colorCodedfps, colorCodedfps, .5));
+            framesPerSecondText.setFillColor(sf::Color(255 - colorCodedfps, colorCodedfps, .5));
             framesPerSecondClock.restart();
             framesSinceClockTick = 0;
 
@@ -356,7 +405,13 @@ int main()
                 {
                     Vec2 distance = e->cTransform->pos - Vec2(mousePosition.x,mousePosition.y);
                     distance.normalize();
-                    e->cRidgedBody->velocity -= distance * 2;
+                    e->cRidgedBody->velocity -= distance * mouseForce;
+
+                }
+                if (keyDown_W)
+                {
+                    e->cTransform->pos = e->cTransform->previousPos;
+                    e->cRidgedBody->velocity = Vec2();
 
                 }
             }
@@ -367,8 +422,8 @@ int main()
             }
             
 		}
- 
-        window.draw(text);
+        window.draw(framesPerSecondText);
+        
         //end magical draw area
         window.display();
 
