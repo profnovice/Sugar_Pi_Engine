@@ -12,18 +12,6 @@
 
 int main()
 {
-    float vOff = 500;
-    std::array<sf::Vertex, 3> vertices;
-
-    vertices[0] = {{ 0.0f + vOff, 0.0f + vOff}, sf::Color::Green, { 0.0f + vOff,  100 + vOff}};
-    vertices[1] = { { 100+ vOff, 0 + vOff }, sf::Color::Red, { 100 + vOff,  100 + vOff } };
-    vertices[2] = { { 100 + vOff, 100 + vOff}, sf::Color::Blue, { 0.0f + vOff,  0.0f + vOff} };
-    
-
-    sf::VertexBuffer triangles(sf::PrimitiveType::Triangles);
-    triangles.create(vertices.size());
-    triangles.update(vertices.data());
-
     unsigned int windowWidth = 1920u;
     unsigned int windowHeight = 1080u;
 
@@ -46,116 +34,13 @@ int main()
 
     std::ifstream fin("assets/config.txt");
 
-    std::vector<Entity> entityVector;
-
-    int newId;
-    int newRadius;
-    int newR;
-    int newG;
-    int newB;
-    int newPosx;
-    int newPosy;
-
     sf::Vector2i mousePosition;
 
-    std::vector<std::shared_ptr<sf::Shape>> shared_Shapes;
-
-    std::shared_ptr<sf::Shape> shared_Shape01 = std::make_shared<sf::CircleShape>(20);
-    std::shared_ptr<sf::Shape> shared_Shape02 = std::make_shared<sf::RectangleShape>(sf::Vector2f(40,40));
-    shared_Shape01->setPosition({200, 200});
-
-    shared_Shapes.push_back(shared_Shape01);
-    shared_Shapes.push_back(shared_Shape02);
-
-    Vec2 vec01(1, 1);
-    Vec2 vec02(1, 1);
-    Vec2 vec03(1, -3);
-
-    vec02 = Vec2::normalize(vec03);
-
-    const Vec2 circle1(150, 100);
-    const  Vec2 circle2(210 , 200);
-    const float circle1rad = 67;
-    const float circle2rad = 100;
-    sf::CircleShape circleShape1(circle1rad);
-    sf::CircleShape circleShape2(circle2rad);
-    circleShape1.setOrigin(sf::Vector2f(circle1rad, circle1rad));
-    circleShape2.setOrigin(sf::Vector2f( circle2rad, circle2rad));
-    circleShape1.setPosition(sf::Vector2f(circle1.x,circle1.y));
-    circleShape2.setPosition(sf::Vector2f(circle2.x, circle2.y));
-    circleShape1.setFillColor(sf::Color(255, 0, 255, 128));
-    circleShape2.setFillColor(sf::Color(255, 255, 0, 128));
-   
-    
-    if(Vec2::circleCollision(circle1,circle2,circle1rad,circle2rad))
-    {
-        std::cout << "Collision" << std::endl;
-
-
-    }
-
-    std::cout << (Vec2::circleOverlap(circle1, circle2, circle1rad, circle2rad)).toString() << std::endl;
-
-    std::vector<SimpleEntity> allSimpleEntites;
-
-    typedef std::vector<std::shared_ptr<SimpleEntity>> EntityVector;
-    typedef std::shared_ptr<SimpleEntity> SimpEntPtr;
-
-    EntityVector simpleEntitiesType;
-   
-    SimpEntPtr nullEntity = (std::make_shared<SimpleEntity>(512, "Broke"));
-
-    nullEntity->cName = std::make_shared<std::string>("im so special");
-    nullEntity->cShape = std::make_shared<sf::RectangleShape>(sf::Vector2f(40, 40));
-   
-    nullEntity->cTransform = std::make_shared<CTransform>(Vec2(900, 900), Vec2(0.1, 1.0));
-
-    nullEntity->cShape->setFillColor(sf::Color::Red);
-
-    
     const sf::Font bitFont("assets/8bitOperatorPlus8-Regular.ttf");
-   
 
     sf::Text text(bitFont);
-   
-    EntityManager manager;
 
-    for (int i = 0; i < 20; ++i)
-    {
-        SimpEntPtr simpEnt;
-
-        if(i%2 == 0)
-        {
-            simpEnt = manager.addEntity("I was Even");
-        }else
-        {
-            simpEnt = manager.addEntity("I was Odd");
-        }
-       
-         
-        
-        std::shared_ptr<std::string> simpEntName;
-        simpEntName = std::make_shared<std::string>(std::string("Name") + std::to_string(i));
-        simpEnt->cName = simpEntName;
-        CTransform intermediateTransform(Vec2(i * 69 % 600, i * 33 % 700), Vec2(i * .02, -i * .02));
-        simpEnt->cTransform = std::make_shared<CTransform>(intermediateTransform);
-        simpEnt->cShape = std::make_shared<sf::RectangleShape>(sf::Vector2f(40, 40));
-        simpEnt->cShape->setFillColor(sf::Color(i*10,255-i*10,(i+1*10+i*100)%256));
-        simpEnt->cDisplayTag = std::make_shared<CDisplayTag>(bitFont);
-        simpEnt->cDisplayTag->text.setString(std::to_string(simpEnt->m_id));
-        simpEnt->cDisplayTag->text.setFillColor(sf::Color::Black);
-        
-
-    }
-
-
-    
-    manager.update();
-
-   
-    
     text.setPosition({1000, 10});
-   // text.setFillColor(sf::Color(255, 255, 255));
 
     sf::Text fpsText(bitFont);
     fpsText.setPosition({ 100,10 });
@@ -175,17 +60,6 @@ int main()
     clockText.setString("Clock");
     clockText.setFillColor(sf::Color(255, 255, 255));
     clockText.setPosition({ (float)windowWidth-200, 100.0f});
-    
-    
-
-    int circleRadius = 64;
-    sf::CircleShape myShape(circleRadius);
-    myShape.setPosition({512,512});
-    sf::Color newColor(255, 255, 255);
-    myShape.setFillColor(newColor);
-
-    Entity myEntity =  Entity(1, myShape);
-
 
     int counterLoop = 0;
 
@@ -341,7 +215,7 @@ int main()
                     mouseDown_LeftButton = false;
                 }
 
-                }
+            }
 
             else if (const auto* resized = event->getIf<sf::Event::Resized>()) 
             {
@@ -352,19 +226,10 @@ int main()
                 window.setFramerateLimit(frameLimit);
                 sf::Image iconImage("assets/SFMLPracticeIcon.png");
                 window.setIcon(iconImage);
-
-
-
                 pauseText.setPosition({ (float)windowWidth / 2 , (float)windowHeight / 2 });
             }
 
-           
-     
         }
-
-
-
-        
 
         if (isPaused)
         {
@@ -374,45 +239,13 @@ int main()
             window.display();
             continue;
         }
-        
-        manager.update();
 
         //std::cout<< testSimpleEntity.use_count() << std::endl;
         if(mouseDown_LeftButton)
         {
             
-            SimpEntPtr simpEnt;
-           
-            
-               simpEnt = manager.addEntity("I'm new");
-         
-               int i = simpEnt->m_id % 25;
-
-
-            std::shared_ptr<std::string> simpEntName;
-            simpEntName = std::make_shared<std::string>(std::string("Name") + std::to_string(i));
-            simpEnt->cName = simpEntName;
-            CTransform intermediateTransform(Vec2(mousePosition.x, mousePosition.y), Vec2(i * .02, -i * .02));
-            simpEnt->cTransform = std::make_shared<CTransform>(intermediateTransform);
-            simpEnt->cShape = std::make_shared<sf::RectangleShape>(sf::Vector2f(40, 40));
-            simpEnt->cShape->setFillColor(sf::Color(i * 10, 255 - i * 10, (i + 1 * 10 + i * 100) % 256));
-            simpEnt->cDisplayTag = std::make_shared<CDisplayTag>(bitFont);
-            simpEnt->cDisplayTag->text.setString(std::to_string(simpEnt->m_id));
-            simpEnt->cDisplayTag->text.setFillColor(sf::Color::Black);
-
-
-            std::cout << simpEnt->m_id << " created, ";
-           
-            manager.getAllEntities().front()->m_alive = false;
-            std::cout << manager.getAllEntities().front()->m_id << " marked for death " << std::endl;
-
-
-
+  
         }
-        
-       
-
-
         movementDir.x = 0;
         movementDir.y = 0;
 
@@ -446,60 +279,15 @@ int main()
         window.clear();
         //magical draw area
 
-        
-
         std::string clockString = std::to_string(clock.getElapsedTime().asSeconds());
         clockText.setString(clockString);
 
         std::string deltaTimeString = std::to_string( deltaTime);
         fpsText.setString(deltaTimeString);
-
-        myEntity.setVecPosition(Vec2(myEntity.getVecPosition().x + movementDir.x * movementMultiplyer * deltaTime, myEntity.getVecPosition().y + movementDir.y * movementMultiplyer * deltaTime) );
-
         window.draw(ceilingSprite);
-
-        window.draw(myEntity.getShape());
-
         window.draw(mouse);
-
         window.draw(clockText);
-
-        
         window.draw(fpsText);
-
-        for (auto& e : manager.getAllEntities())
-        {
-
-            if (e->cShape && e->cTransform)
-            {
-                
-                if (e->cTransform->pos.x < 0.0f || e->cTransform->pos.x + e->cShape->getSize().x> windowWidth) {
-                    e->cTransform->velocity.x = e->cTransform->velocity.x * -1.0f;
-                }
-                if (e->cTransform->pos.y < 0.0f || e->cTransform->pos.y +e->cShape->getSize().y > windowHeight) {
-                    e->cTransform->velocity.y = e->cTransform->velocity.y * -1.0f;
-                }
-
-                
-
-                e->cTransform->pos = e->cTransform->pos + e->cTransform->velocity * deltaTime;
-                e->cShape->setPosition({e->cTransform->pos.x, e->cTransform->pos.y});
-                window.draw(*e->cShape);
-
-            }
-            
-            if (e->cDisplayTag && e->cTransform)
-            {
-
-                e->cDisplayTag->text.setPosition({ e->cTransform->pos.x,e->cTransform->pos.y });
-                window.draw(e->cDisplayTag->text);
-
-            }
-            
-
-        }
-
-
 
         framesSinceClockTick++;
         float elapsedSeconds = framesPerSecondClock.getElapsedTime().asSeconds();
@@ -514,11 +302,8 @@ int main()
             
 
         }
-        window.draw(circleShape1);
-        window.draw(circleShape2);
-
+ 
         window.draw(text);
-        window.draw(triangles);
         //end magical draw area
         window.display();
 
