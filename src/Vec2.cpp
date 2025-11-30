@@ -129,6 +129,12 @@ Vec2 const Vec2::getVelocityFromSpeedAndAngle(const float speed, const float ang
     return Vec2(speed * std::cos(angle), speed * std::sin(angle));
 }
 
+Vec2 const Vec2::polarToCartesian(const float angle, const float magnitude)
+{
+    return Vec2(magnitude * std::cos(angle), magnitude * std::sin(angle));
+}
+
+
 Vec2 const Vec2::normalize(const Vec2& in)
 {
     float magnitude = std::sqrt(in.x * in.x + in.y * in.y);

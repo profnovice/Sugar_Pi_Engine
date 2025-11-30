@@ -44,6 +44,7 @@ public:
 
     // Static utilities
     static Vec2 const getVelocityFromSpeedAndAngle(const float speed, const float angle);
+    static Vec2 const polarToCartesian(const float angle, const float magnitude);
     static Vec2 const normalize(const Vec2& in);
     static float dist(const Vec2& lhs, const Vec2& rhs);
     static bool circleCollision(const Vec2& cp1, const Vec2& cp2, float r1, float r2);
