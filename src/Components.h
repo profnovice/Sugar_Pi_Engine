@@ -32,6 +32,8 @@ class CShape : public Component
 {
 public:
 	sf::CircleShape circle;
+	CShape(float radius);
+	CShape(float radius, const sf::Color& fill);
 	CShape(float radius, int edges, const sf::Color& fill, const sf::Color& outline, float thickness);
 };
 
@@ -71,5 +73,7 @@ public:
 	bool down = false;
 	bool left = false;
 	bool right = false;
+	float inputAngle = 0.0f;
+	float inputMagnitude = 0.0f;
 	CInput();
 };

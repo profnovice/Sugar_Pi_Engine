@@ -22,6 +22,25 @@ void CTransform::print()
 CDisplayTag::CDisplayTag(const sf::Font& font)
 	:text(sf::Text(font)){}
 
+CShape::CShape(float radius)
+	:circle(radius)
+{
+	circle.setOrigin({ radius, radius });
+	circle.setFillColor(sf::Color::White);
+	circle.setOutlineColor(sf::Color::Black);
+	circle.setOutlineThickness(1.0f);
+}
+
+CShape::CShape(float radius, const sf::Color& fill)
+	:circle(radius)
+{
+	circle.setFillColor(fill);
+	circle.setOutlineColor(sf::Color::Black);
+	circle.setOutlineThickness(1.0f);
+	circle.setOrigin({ radius, radius });
+}
+
+
 CShape::CShape(float radius, int edges, const sf::Color& fill, const sf::Color& outline, float thickness)
 		:circle(radius, edges)
 	{
