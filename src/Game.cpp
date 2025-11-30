@@ -14,7 +14,19 @@ void Game::init(const std::string& config)
 	m_player->cTransform = std::make_shared<CTransform>(Vec2());
 	m_player->cInput = std::make_shared<CInput>();
 	m_player->cShape = std::make_shared<CShape>(64);
+	m_player->cCollision = std::make_shared<CCollision>(64);
 	updateWindow();
+
+	SimpEntPtr collisionTestA = m_manager.addEntity("CollisionEntity");
+	collisionTestA->cTransform = std::make_shared<CTransform>(Vec2(400.0f, 300.0f));
+	collisionTestA->cShape = std::make_shared<CShape>(50.0f, 12, sf::Color::Green, sf::Color::Red, 3.0f);
+	collisionTestA->cCollision = std::make_shared<CCollision>(50.0f);
+	SimpEntPtr collisionTestB = m_manager.addEntity("CollisionEntity");
+	collisionTestB->cTransform = std::make_shared<CTransform>(Vec2(600.0f, 300.0f));
+	collisionTestB->cShape = std::make_shared<CShape>(50.0f, 12, sf::Color::Blue, sf::Color::Red, 3.0f);
+	collisionTestB->cCollision = std::make_shared<CCollision>(50.0f);
+
+
 
 }
 
@@ -214,6 +226,28 @@ void Game::sEnemySpawner()
 
 void Game::sCollision()
 {
+	for (auto& entityA : m_manager.getAllEntities())
+	{
+		if (!entityA->cCollision || !entityA->cTransform){ continue; }
+
+		for (auto& entityB : m_manager.getAllEntities())
+		{
+			if (entityA == entityB) { continue; }
+			if (!entityB->cCollision || !entityB->cTransform) { continue; }
+			if (!Vec2::circleCollision(entityA->cTransform->pos, entityB->cTransform->pos, entityA->cCollision->radius, entityB->cCollision->radius)) { continue; }
+			//std::cout << "Collision detected between Entity " << entityA->getId() << " and Entity " << entityB->getId() << std::endl;
+			Vec2 overlap = Vec2::circleOverlap(
+				entityA->cTransform->pos,
+				entityB->cTransform->pos,
+				entityA->cCollision->radius,
+				entityB->cCollision->radius
+			);
+			entityA->cTransform->pos += overlap / 2.0f;
+			entityB->cTransform->pos -= overlap / 2.0f;
+			
+		}
+		
+	}
 }
 
 void Game::spawnPlayer()
