@@ -1,17 +1,38 @@
 #include "Game.h"
 
+Game::Game(const std::string& config)
+	:m_font("assets/8bitOperatorPlus8-Regular.ttf"), m_text(m_font)
+{
+	init(config);
+}
+
+void Game::init(const std::string& config)
+{
+	m_font.openFromFile("assets/8bitOperatorPlus8-Regular.ttf");
+	m_text.setFont(m_font);
+	m_player = m_manager.addEntity();
+	m_player->cTransform = std::make_shared<CTransform>(Vec2());
+	m_player->cInput = std::make_shared<CInput>();
+	m_player->cShape = std::make_shared<CShape>(64);
+	updateWindow();
+
+}
+
 void Game::run()
 {
 	while (m_running)
 	{
-		m_entities.update();
+		m_manager.update();
+		//std::cout << m_manager.getAllEntities().size();
 
 		if (!m_paused)
 		{
+			
 			sEnemySpawner();
 			sMovement();
 			sCollision();
 		}
+		//else { std::cout << "Paused\n"; }
 		sUserInput();
 		sRender();
 
@@ -25,6 +46,7 @@ void Game::setPaused(bool paused)
 	m_paused = paused;
 }
 
+
 void Game::updateWindow()
 {
 	m_window.create(sf::VideoMode({ (unsigned int)m_windowSize.x, (unsigned int)m_windowSize.y }), "SimEngine", sf::Style::Default);
@@ -37,10 +59,21 @@ void Game::updateWindow()
 
 void Game::sMovement()
 {
-	if (m_player->cInput->up)
+	m_player->cTransform->velocity = Vec2::polarToCartesian(
+		m_player->cInput->inputAngle,
+		m_player->cInput->inputMagnitude * 5.0f
+	);
+	std::cout << m_player->cTransform->pos.toString() << std::endl;
+	for (auto& entity : m_manager.getAllEntities())
 	{
-		m_player->cTransform->velocity.y -= 1.0f;
+		if (entity->cTransform)
+		{
+			entity->cTransform->previousPos = entity->cTransform->pos;
+			entity->cTransform->pos += entity->cTransform->velocity;
+			
+		}
 	}
+	
 }
 
 void Game::sUserInput()
@@ -92,6 +125,30 @@ void Game::sUserInput()
 				break;
 			}
 		}
+		
+
+		
+		if(m_player->cInput->up || m_player->cInput->down || m_player->cInput->left || m_player->cInput->right)
+		{
+			Vec2 inputDir = { 0.0f,0.0f };
+			if (m_player->cInput->up)
+				inputDir.y -= 1.0f;
+			if (m_player->cInput->down)
+				inputDir.y += 1.0f;
+			if (m_player->cInput->left)
+				inputDir.x -= 1.0f;
+			if (m_player->cInput->right)
+				inputDir.x += 1.0f;
+			inputDir.normalize();
+			m_player->cInput->inputAngle = std::atan2(inputDir.y, inputDir.x);
+			m_player->cInput->inputMagnitude = 1.0f;
+		}
+		else
+		{
+			m_player->cInput->inputMagnitude = 0.0f;
+		}
+
+
 		if (const auto* mouseClick = event->getIf<sf::Event::MouseButtonPressed>())
 		{
 			if (mouseClick->button == sf::Mouse::Button::Left)
@@ -127,6 +184,16 @@ void Game::sUserInput()
 
 void Game::sRender()
 {
+	m_window.clear();
+	for (auto& entity : m_manager.getAllEntities())
+	{
+		if (entity->cShape && entity->cTransform)
+		{
+			entity->cShape->circle.setPosition((sf::Vector2f)(entity->cTransform->pos));
+			m_window.draw(entity->cShape->circle);
+		}
+	}
+	m_window.display();
 }
 
 void Game::sEnemySpawner()
