@@ -158,34 +158,25 @@ float Vec2::dist(const Vec2& lhs, const Vec2& rhs)
     return std::sqrt(xdist * xdist + ydist * ydist);
 }
 
+
 bool Vec2::circleCollision(const Vec2& cp1, const Vec2& cp2, float r1, float r2)
 {
-    Vec2 distance = cp1 - cp2;
-    float DisSq = distance.x * distance.x + distance.y * distance.y;
-
-    if (DisSq < (r1 + r2) * (r1 + r2))
-    {
-        return true;
-    }
-    return false;
+    float distSq = (cp2.x - cp1.x) * (cp2.x - cp1.x) + (cp2.y - cp1.y) * (cp2.y - cp1.y);
+    float radii = r1 + r2;
+    float radiiSq = radii * radii;
+    return distSq < radiiSq;
 }
+
 
 Vec2 Vec2::circleOverlap(const Vec2& cp1, const Vec2& cp2, float r1, float r2)
 {
-    Vec2 delta = cp2 - cp1;
-    float distSq = delta.x * delta.x + delta.y * delta.y;
-    float radii = r1 + r2;
-    float radiiSq = radii * radii;
-    if (distSq >= radiiSq)
+    Vec2 distance = cp2 - cp1;
+    float distMag = std::sqrt(distance.x * distance.x + distance.y * distance.y);
+    float overlapMag = (r1 + r2) - distMag;
+    if (overlapMag > 0)
     {
-        return Vec2(0, 0);
+        distance.normalize();
+        return distance * overlapMag;
     }
-    float dist = std::sqrt(distSq);
-    if (dist == 0.0f)
-    {
-        return Vec2(radii, 0);
-    }
-
-    float overlap = radii - dist;
-    return delta * (overlap / dist);
+    return Vec2(0, 0);
 }
