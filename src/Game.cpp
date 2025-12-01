@@ -10,13 +10,9 @@ void Game::init(const std::string& config)
 {
 	m_font.openFromFile("assets/8bitOperatorPlus8-Regular.ttf");
 	m_text.setFont(m_font);
-	m_player = m_manager.addEntity();
-	m_player->cTransform = std::make_shared<CTransform>(Vec2());
-	m_player->cInput = std::make_shared<CInput>();
-	m_player->cShape = std::make_shared<CShape>(64);
-	m_player->cCollision = std::make_shared<CCollision>(64);
+	
 	updateWindow();
-
+	spawnPlayer();
 	SimpEntPtr collisionTestA = m_manager.addEntity("CollisionEntity");
 	collisionTestA->cTransform = std::make_shared<CTransform>(Vec2(400.0f, 300.0f));
 	collisionTestA->cShape = std::make_shared<CShape>(50.0f, 12, sf::Color::Green, sf::Color::Red, 3.0f);
@@ -228,23 +224,25 @@ void Game::sCollision()
 {
 	for (auto& entityA : m_manager.getEntities())
 	{
-		if (!entityA->cCollision || !entityA->cTransform){ continue; }
+		if (!entityA->cCollision || !entityA->cTransform) { continue; }
 
 		for (auto& entityB : m_manager.getEntities())
 		{
 			if (entityA == entityB) { continue; }
 			if (!entityB->cCollision || !entityB->cTransform) { continue; }
 			if (!Vec2::circleCollision(entityA->cTransform->pos, entityB->cTransform->pos, entityA->cCollision->radius, entityB->cCollision->radius)) { continue; }
-			//std::cout << "Collision detected between Entity " << entityA->getId() << " and Entity " << entityB->getId() << std::endl;
+			std::cout << "Collision detected between Entity " << entityA->getId() << " and Entity " << entityB->getId() << std::endl;
+			
 			Vec2 overlap = Vec2::circleOverlap(
 				entityA->cTransform->pos,
 				entityB->cTransform->pos,
 				entityA->cCollision->radius,
 				entityB->cCollision->radius
 			);
-			entityA->cTransform->pos += overlap / 2.0f;
-			entityB->cTransform->pos -= overlap / 2.0f;
-
+			entityA->cTransform->pos -= overlap / 2.0f;
+			entityB->cTransform->pos += overlap / 2.0f;
+			
+			
 		}
 		
 	}
@@ -252,6 +250,11 @@ void Game::sCollision()
 
 void Game::spawnPlayer()
 {
+	m_player = m_manager.addEntity("Player");
+	m_player->cTransform = std::make_shared<CTransform>(Vec2());
+	m_player->cInput = std::make_shared<CInput>();
+	m_player->cShape = std::make_shared<CShape>(64);
+	m_player->cCollision = std::make_shared<CCollision>(64);
 }
 
 void Game::spawnEnemy(SimpEntPtr entity)
