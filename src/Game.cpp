@@ -1,5 +1,10 @@
 #include "Game.h"
 
+template <typename T>
+T custom_lerp(T a, T b, T t) {
+	return a + t * (b - a);
+}
+
 Game::Game(const std::string& config)
 	:m_font("assets/8bitOperatorPlus8-Regular.ttf"), m_text(m_font)
 {
@@ -13,11 +18,11 @@ void Game::init(const std::string& config)
 	
 	updateWindow();
 	spawnPlayer();
-	SimpEntPtr collisionTestA = m_manager.addEntity("CollisionEntity");
+	SimpEntPtr collisionTestA = m_manager.addEntity("Points");
 	collisionTestA->cTransform = std::make_shared<CTransform>(Vec2(400.0f, 300.0f));
 	collisionTestA->cShape = std::make_shared<CShape>(50.0f, 12, sf::Color::Green, sf::Color::Red, 3.0f);
 	collisionTestA->cCollision = std::make_shared<CCollision>(50.0f);
-	SimpEntPtr collisionTestB = m_manager.addEntity("CollisionEntity");
+	SimpEntPtr collisionTestB = m_manager.addEntity("Points");
 	collisionTestB->cTransform = std::make_shared<CTransform>(Vec2(600.0f, 300.0f));
 	collisionTestB->cShape = std::make_shared<CShape>(50.0f, 12, sf::Color::Blue, sf::Color::Red, 3.0f);
 	collisionTestB->cCollision = std::make_shared<CCollision>(50.0f);
@@ -30,13 +35,13 @@ void Game::run()
 {
 	sf::Clock framesPerSecondClock;
 	size_t framesSinceClockTick = 0;
-
+	sEnemySpawner();
 	while (m_running)
 	{
 		m_manager.update();
 		if (!m_paused)
 		{
-			sEnemySpawner();
+			
 			sMovement();
 			sCollision();
 		}
@@ -218,6 +223,35 @@ void Game::sRender()
 
 void Game::sEnemySpawner()
 {
+	int iMax = 40;
+	int jMax = 10;
+	int gravIn = 1;
+	bool grav = true;
+
+	for (int i = 0; i < iMax; i++)
+	{
+		for (int j = 0; j < jMax; j++)
+		{
+
+
+			int radius = 16;
+			SimpEntPtr physicsEntity = m_manager.addEntity("Physics");
+			physicsEntity->cTransform = std::make_shared<CTransform>(Vec2(m_windowSize.x / iMax * i + 20, m_windowSize.x / iMax * j + 100));
+			physicsEntity->cTransform->previousPos = physicsEntity->cTransform->pos;
+			sf::Color specialColor
+			(
+				custom_lerp(0.0f, 255.0f, (float)i / (float)iMax),
+				255 - custom_lerp(0.0f, 255.0f, (float)j / (float)jMax),
+				255 - (custom_lerp(0.0f, 255.0f, (float)i / (float)iMax) + (255 - custom_lerp(0.0f, 255.0f, (float)j / (float)jMax))) / 2
+			);
+			physicsEntity->cShape = std::make_shared<CShape>(radius, 12, specialColor, sf::Color::Red, 3.0f);
+			physicsEntity->cCollision = std::make_shared<CCollision>(radius);
+			physicsEntity->cRidgedBody = std::make_shared<CRidgedBody>();
+			physicsEntity->cRidgedBody->mass = .25;
+			physicsEntity->cRidgedBody->useGravity = grav;
+		}
+
+	}
 }
 
 void Game::sCollision()
@@ -231,7 +265,7 @@ void Game::sCollision()
 			if (entityA == entityB) { continue; }
 			if (!entityB->cCollision || !entityB->cTransform) { continue; }
 			if (!Vec2::circleCollision(entityA->cTransform->pos, entityB->cTransform->pos, entityA->cCollision->radius, entityB->cCollision->radius)) { continue; }
-			std::cout << "Collision detected between Entity " << entityA->getId() << " and Entity " << entityB->getId() << std::endl;
+			//std::cout << "Collision detected between Entity " << entityA->getId() << " and Entity " << entityB->getId() << std::endl;
 			
 			Vec2 overlap = Vec2::circleOverlap(
 				entityA->cTransform->pos,
@@ -241,6 +275,12 @@ void Game::sCollision()
 			);
 			entityA->cTransform->pos -= overlap / 2.0f;
 			entityB->cTransform->pos += overlap / 2.0f;
+
+			if(entityA->getTag() == "Player" && entityB->getTag() == "Points")
+			{
+				std::cout << "Player collected a point!" << std::endl;
+				entityB->destroy();
+			}
 			
 			
 		}
