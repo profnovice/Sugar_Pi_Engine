@@ -24,6 +24,7 @@ public:
 	std::shared_ptr<CSprite> cSprite;
 	std::shared_ptr<CRidgedBody> cRidgedBody;
 	std::shared_ptr<CInput> cInput;
+	std::shared_ptr<CBoundingBox> cBoundingBox;
 
 	bool isAlive() const;
 	const std::string& getTag() const;
