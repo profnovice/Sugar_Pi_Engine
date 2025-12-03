@@ -42,6 +42,34 @@ bool Vec2::operator!=(const Vec2& rhs) const
     return true;
 }
 
+
+bool Vec2::operator==(const float val) const
+{
+    if (x == val && y == val)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Vec2::operator<(const float val) const
+{
+    if (x < val && y < val)
+    {
+        return true;
+    }
+    return false;
+}
+bool Vec2::operator>(const float val) const
+{
+    if (x > val && y > val)
+    {
+        return true;
+    }
+    return false;
+}
+
+
  // Binary arithmetic
 Vec2 Vec2::operator+(const Vec2& rhs) const
 {
