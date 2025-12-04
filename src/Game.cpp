@@ -49,7 +49,7 @@ void Game::run()
 		float elapsedSeconds = framesPerSecondClock.getElapsedTime().asSeconds();
 		if (elapsedSeconds >= 1.0f)
 		{
-			std::cout << std::to_string((int)(framesSinceClockTick / elapsedSeconds)) << std::endl;
+			//std::cout << std::to_string((int)(framesSinceClockTick / elapsedSeconds)) << std::endl;
 			framesPerSecondClock.restart();
 			framesSinceClockTick = 0;
 
@@ -295,7 +295,7 @@ void Game::sTestAABB()
 	entityB->cShape->circle.setRotation(sf::degrees(45.0f));
 	entityB->cBoundingBox = std::make_shared<CBoundingBox>(Vec2(boxSize, boxSize));
 
-	
+		
 	//from top and bottom, moving towards each other
 	SimpEntPtr entityC = m_manager.addEntity("AABBTestC");
 	entityC->cTransform = std::make_shared<CTransform>(Vec2(900, 300));
@@ -326,7 +326,7 @@ void Game::sTestAABB()
 	entityF->cShape->circle.setRotation(sf::degrees(45.0f));
 	entityF->cBoundingBox = std::make_shared<CBoundingBox>(Vec2(boxSize, boxSize));
 	
-
+	
 }
 
 void Game::sCollision()
@@ -397,24 +397,32 @@ void Game::sAABBCollision()
 					entityB->cTransform->pos.y += currentOverlap.y / 2.0f;
 				}
 				*/
+	
 				if(previousOverlap.x > 0.0f && previousOverlap.y > 0.0f)
 				{
-					//no movement info, just separate in both axes equally
-					entityA->cTransform->pos.y = entityA->cTransform->previousPos.y;
-					entityB->cTransform->pos.y = entityB->cTransform->previousPos.y;
+					//no movement info, by default place on top/bottom
+					entityA->cTransform->pos.y -= .1 + (currentOverlap.y / 2);
+					entityB->cTransform->pos.y += .1 + (currentOverlap.y / 2);
+					//entityA->cTransform->pos.y = entityA->cTransform->previousPos.y;
+					//entityB->cTransform->pos.y = entityB->cTransform->previousPos.y;
+					continue;
 				}
 
 				else if (previousOverlap.y > 0.0f)//movement came left or right
 				{
-					entityA->cTransform->pos.x = entityA->cTransform->previousPos.x;
-					entityB->cTransform->pos.x = entityB->cTransform->previousPos.x;
-			
+					entityA->cTransform->pos.x -= .1 + (currentOverlap.x / 2);
+					entityB->cTransform->pos.x += .1 + (currentOverlap.x / 2);
+					//entityA->cTransform->pos.x = entityA->cTransform->previousPos.x;
+					//entityB->cTransform->pos.x = entityB->cTransform->previousPos.x;
+					continue;
 				}
 				else if (previousOverlap.x > 0.0f)//movement came from top or bottom
 				{
-					entityA->cTransform->pos.y = entityA->cTransform->previousPos.y;
-					entityB->cTransform->pos.y = entityB->cTransform->previousPos.y;
-					
+					entityA->cTransform->pos.y -= .1 + (currentOverlap.y / 2);
+					entityB->cTransform->pos.y += .1 + (currentOverlap.y / 2);
+					//entityA->cTransform->pos.y = entityA->cTransform->previousPos.y;
+					//entityB->cTransform->pos.y = entityB->cTransform->previousPos.y;
+					continue;
 				}
 				
 
