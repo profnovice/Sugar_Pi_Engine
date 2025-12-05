@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <cmath>
+#define M_PI 3.14159265358979323846
 
 class Vec2 {
 public:
@@ -16,13 +17,14 @@ public:
     // Queries / helpers
     Vec2 length() const;
     std::string toString() const;
+    float angle() const;
 
     // Comparison
     bool operator == (const Vec2& rhs) const;
     bool operator != (const Vec2& rhs) const;
-	bool operator == (const float val) const;
-	bool operator < (const float val) const;
-	bool operator > (const float val) const;
+    bool operator == (const float val) const;
+    bool operator < (const float val) const;
+    bool operator > (const float val) const;
 
     // Binary arithmetic
     Vec2 operator + (const Vec2& rhs) const;
@@ -31,8 +33,8 @@ public:
     Vec2 operator / (const float val) const;
 
     // Compound assignment
-    void operator += (const Vec2 & rhs);
-    void operator -= (const Vec2 & rhs);
+    void operator += (const Vec2& rhs);
+    void operator -= (const Vec2& rhs);
     void operator *= (const float rhs);
     void operator /= (const float val);
 
@@ -52,4 +54,5 @@ public:
     static float dist(const Vec2& lhs, const Vec2& rhs);
     static bool circleCollision(const Vec2& cp1, const Vec2& cp2, float r1, float r2);
     static Vec2 circleOverlap(const Vec2& cp1, const Vec2& cp2, float r1, float r2);
+    static float toDegrees(float const radians);
 };

@@ -1,6 +1,7 @@
 #include "Vec2.h"
 #include <cmath>
 
+
  // Construction
 Vec2::Vec2()
     :x(0), y(0)
@@ -21,6 +22,12 @@ Vec2 Vec2::length() const
 std::string Vec2::toString() const
 {
     return "x: " + std::to_string(x) + " y: " + std::to_string(y);
+}
+
+float Vec2::angle() const
+{
+
+	return Vec2::toDegrees(std::atan2(y, x));
 }
 
  // Comparison
@@ -207,4 +214,9 @@ Vec2 Vec2::circleOverlap(const Vec2& cp1, const Vec2& cp2, float r1, float r2)
         return distance * overlapMag;
     }
     return Vec2(0, 0);
+}
+
+float Vec2::toDegrees(float const radians)
+{
+        return radians * (180.0f / static_cast<float>(M_PI));
 }
