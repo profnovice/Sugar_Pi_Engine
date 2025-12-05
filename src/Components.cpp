@@ -56,6 +56,7 @@ CCollision::CCollision(float r)
 CSprite::CSprite(const sf::Texture& texture)
 	:sprite(sf::Sprite(texture))
 {
+	sprite.setOrigin(sf::Vector2f(texture.getSize().x / 2.0f, texture.getSize().y / 2.0f));
 }
 
 CRidgedBody::CRidgedBody()
@@ -67,6 +68,10 @@ CInput::CInput()
 }
 
 CBoundingBox::CBoundingBox(const Vec2& s)
-	:size(s), halfSize(s.x / 2.0f, s.y / 2.0f)
+	:size(s), halfSize(s.x / 2.0f, s.y / 2.0f), debugRec(sf::RectangleShape(sf::Vector2f(s.x, s.y)))
 {
+	debugRec.setOrigin(sf::Vector2f(halfSize.x, halfSize.x));
+	debugRec.setFillColor(sf::Color(255,0,0,64));
+	debugRec.setOutlineColor(sf::Color::Red);
+	debugRec.setOutlineThickness(1.0f);
 }

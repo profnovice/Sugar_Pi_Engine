@@ -83,5 +83,7 @@ class CBoundingBox : public Component
 public:
 	Vec2 size;
 	Vec2 halfSize;
+	sf::RectangleShape debugRec;
 	CBoundingBox(const Vec2& s);
+	
 };
