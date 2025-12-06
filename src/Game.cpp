@@ -114,27 +114,25 @@ void Game::sMovement()
 			entity->cTransform->velocity.y = -entity->cTransform->velocity.y;
 		}
 
+
+		if (entity->cTransform->pos.x < 0.0f + entity->cBoundingBox->halfSize.x)
+		{
+			entity->cTransform->pos.x = 0.0f + entity->cBoundingBox->halfSize.x;
+		}
+		if (entity->cTransform->pos.x > m_windowSize.x - entity->cBoundingBox->halfSize.x)
+		{
+			entity->cTransform->pos.x = m_windowSize.x - entity->cBoundingBox->halfSize.x;
+		}
+		if (entity->cTransform->pos.y < 0.0f + entity->cBoundingBox->halfSize.y)
+		{
+			entity->cTransform->pos.y = 0.0f + entity->cBoundingBox->halfSize.y;
+		}
+		if (entity->cTransform->pos.y > m_windowSize.y - entity->cBoundingBox->halfSize.y)
+		{
+			entity->cTransform->pos.y = m_windowSize.y - entity->cBoundingBox->halfSize.y;
+		}
 		
 	}
-
-
-	if (m_player->cTransform->pos.x < 0.0f + m_player->cBoundingBox->halfSize.x)
-	{
-		m_player->cTransform->pos.x = 0.0f + m_player->cBoundingBox->halfSize.x;
-	}
-	if (m_player->cTransform->pos.x > m_windowSize.x - m_player->cBoundingBox->halfSize.x)
-	{
-		m_player->cTransform->pos.x = m_windowSize.x - m_player->cBoundingBox->halfSize.x;
-	}
-	if (m_player->cTransform->pos.y < 0.0f + m_player->cBoundingBox->halfSize.y)
-	{
-		m_player->cTransform->pos.y = 0.0f + m_player->cBoundingBox->halfSize.y;
-	}
-	if (m_player->cTransform->pos.y > m_windowSize.y - m_player->cBoundingBox->halfSize.y)
-	{
-		m_player->cTransform->pos.y = m_windowSize.y - m_player->cBoundingBox->halfSize.y;
-	}
-	
 }
 void Game::sUserInput()
 {
