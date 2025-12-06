@@ -24,6 +24,7 @@ class Game
 	int m_frameLimit = 120;
 
 	sf::Texture ghostTexture;
+	sf::Texture playerTexture;
 
 	template <typename T>
 	void drawWrapper(T); //Not sure I'll need this just preemptive

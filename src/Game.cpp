@@ -16,11 +16,13 @@ void Game::init(const std::string& config)
 	m_font.openFromFile("assets/8bitOperatorPlus8-Regular.ttf");
 	m_text.setFont(m_font);
 	
-	updateWindow();
-	spawnPlayer();
 	ghostTexture = sf::Texture("assets/ghost_01.png"); 
 	ghostTexture.setSmooth(false);
-	sf::Sprite ghostSprite(ghostTexture);
+	playerTexture = sf::Texture("assets/SimplePlayer.png");
+	playerTexture.setSmooth(false);	
+	updateWindow();
+	spawnPlayer();
+	//sf::Sprite ghostSprite(ghostTexture);
 	m_showColliders = false;
 
 
@@ -83,6 +85,9 @@ void Game::sMovement()
 		m_player->cInput->inputAngle,
 		m_player->cInput->inputMagnitude * 10
 	);
+	
+
+
 	//std::cout << m_player->cTransform->pos.toString() << std::endl;
 	for (auto& entity : m_manager.getEntities())
 	{
@@ -90,6 +95,8 @@ void Game::sMovement()
 		
 		entity->cTransform->previousPos = entity->cTransform->pos;
 		entity->cTransform->pos += entity->cTransform->velocity;
+		
+		
 
 		if (!entity->cBoundingBox){continue;}
 
@@ -107,9 +114,26 @@ void Game::sMovement()
 
 		
 	}
+
+
+	if (m_player->cTransform->pos.x < 0.0f + m_player->cBoundingBox->halfSize.x)
+	{
+		m_player->cTransform->pos.x = 0.0f + m_player->cBoundingBox->halfSize.x;
+	}
+	if (m_player->cTransform->pos.x > m_windowSize.x - m_player->cBoundingBox->halfSize.x)
+	{
+		m_player->cTransform->pos.x = m_windowSize.x - m_player->cBoundingBox->halfSize.x;
+	}
+	if (m_player->cTransform->pos.y < 0.0f + m_player->cBoundingBox->halfSize.y)
+	{
+		m_player->cTransform->pos.y = 0.0f + m_player->cBoundingBox->halfSize.y;
+	}
+	if (m_player->cTransform->pos.y > m_windowSize.y - m_player->cBoundingBox->halfSize.y)
+	{
+		m_player->cTransform->pos.y = m_windowSize.y - m_player->cBoundingBox->halfSize.y;
+	}
 	
 }
-
 void Game::sUserInput()
 {
 	while (const std::optional event = m_window.pollEvent())
@@ -234,8 +258,10 @@ void Game::sRender()
 		}
 		if (entity->cSprite&& entity->cTransform)
 		{
-			entity->cSprite->sprite.setPosition((sf::Vector2f)(entity->cTransform->pos));
+			entity->cSprite->sprite.setPosition((entity->cTransform->pos));
+			
 			Vec2 rotator = Vec2(entity->cTransform->velocity);
+
 			rotator.normalize();
 			Vec2 flippedRotator = rotator;
 			flippedRotator *= -1;
@@ -315,7 +341,7 @@ void Game::sTestAABB()
 	float boxSize = 60; 
 	
 	//from the side of the screen, moving towards each other
-	SimpEntPtr entityA = m_manager.addEntity("AABBTestA");
+	SimpEntPtr entityA = m_manager.addEntity("AABBTest");
 	entityA->cTransform = std::make_shared<CTransform>(Vec2(500, 500));
 	entityA->cTransform->velocity = Vec2(0.5f, .1);
 	//entityA->cShape = std::make_shared<CShape>(radius, points, sf::Color::Yellow, sf::Color::Red, 3.0f);
@@ -324,7 +350,7 @@ void Game::sTestAABB()
 	entityA->cSprite->sprite.setColor(sf::Color::Yellow);
 	entityA->cBoundingBox = std::make_shared<CBoundingBox>(Vec2(boxSize, boxSize));
 
-	SimpEntPtr entityB = m_manager.addEntity("AABBTestB");
+	SimpEntPtr entityB = m_manager.addEntity("AABBTest");
 	entityB->cTransform = std::make_shared<CTransform>(Vec2(700, 500));
 	entityB->cTransform->velocity = Vec2(-0.5f, 0);
 	//entityB->cShape = std::make_shared<CShape>(radius, points, sf::Color::Cyan, sf::Color::Red, 3.0f);
@@ -335,7 +361,7 @@ void Game::sTestAABB()
 
 		
 	//from top and bottom, moving towards each other
-	SimpEntPtr entityC = m_manager.addEntity("AABBTestC");
+	SimpEntPtr entityC = m_manager.addEntity("AABBTest");
 	entityC->cTransform = std::make_shared<CTransform>(Vec2(900, 300));
 	entityC->cTransform->velocity = Vec2(.1, 0.5f);
 	//entityC->cShape = std::make_shared<CShape>(radius, points, sf::Color::Magenta, sf::Color::Red, 3.0f);
@@ -344,7 +370,7 @@ void Game::sTestAABB()
 	entityC->cSprite->sprite.setColor(sf::Color::Magenta);
 	entityC->cBoundingBox = std::make_shared<CBoundingBox>(Vec2(boxSize, boxSize));
 
-	SimpEntPtr entityD = m_manager.addEntity("AABBTestD");
+	SimpEntPtr entityD = m_manager.addEntity("AABBTest");
 	entityD->cTransform = std::make_shared<CTransform>(Vec2(900, 500));
 	entityD->cTransform->velocity = Vec2(0, -0.5f);
 	//entityD->cShape = std::make_shared<CShape>(radius, points, sf::Color::Green, sf::Color::Red, 3.0f);
@@ -354,7 +380,7 @@ void Game::sTestAABB()
 	entityD->cBoundingBox = std::make_shared<CBoundingBox>(Vec2(boxSize, boxSize));
 
 	//diagonal collision
-	SimpEntPtr entityE = m_manager.addEntity("AABBTestE");
+	SimpEntPtr entityE = m_manager.addEntity("AABBTest");
 	entityE->cTransform = std::make_shared<CTransform>(Vec2(1100, 300));
 	entityE->cTransform->velocity = Vec2(0.5f, 0.5f);
 	//entityE->cShape = std::make_shared<CShape>(radius, points, sf::Color::White, sf::Color::Red, 3.0f);
@@ -363,7 +389,7 @@ void Game::sTestAABB()
 	entityE->cSprite->sprite.setColor(sf::Color::White);
 	entityE->cBoundingBox = std::make_shared<CBoundingBox>(Vec2(boxSize, boxSize));
 	
-	SimpEntPtr entityF = m_manager.addEntity("AABBTestF");
+	SimpEntPtr entityF = m_manager.addEntity("AABBTest");
 	entityF->cTransform = std::make_shared<CTransform>(Vec2(1300, 500));
 	entityF->cTransform->velocity = Vec2(-0.5f, -0.5f);
 	//entityF->cShape = std::make_shared<CShape>(radius, points, sf::Color::Black, sf::Color::Red, 3.0f);
@@ -371,7 +397,7 @@ void Game::sTestAABB()
 	entityF->cSprite = std::make_shared<CSprite>(ghostTexture);
 	entityF->cSprite->sprite.setColor(sf::Color::Red);
 	entityF->cBoundingBox = std::make_shared<CBoundingBox>(Vec2(boxSize, boxSize));
-	
+
 	
 }
 
@@ -489,8 +515,11 @@ void Game::spawnPlayer()
 	m_player->cTransform = std::make_shared<CTransform>(Vec2(50,50));
 	m_player->cInput = std::make_shared<CInput>();
 	//m_player->cShape = std::make_shared<CShape>(64);
-	m_player->cShape = std::make_shared<CShape>(std::sqrt(radius * radius + radius * radius), 4, sf::Color::Blue, sf::Color::Red, 3.0f);
-	m_player->cShape->circle.setRotation(sf::degrees(45.0f));
+	//m_player->cShape = std::make_shared<CShape>(std::sqrt(radius * radius + radius * radius), 4, sf::Color::Blue, sf::Color::Red, 3.0f);
+	//m_player->cShape->circle.setRotation(sf::degrees(45.0f));
+	m_player->cSprite = std::make_shared<CSprite>(playerTexture);
+
+	//m_player->cSprite->sprite.setColor(sf::Color(255,255,255));
 	m_player->cBoundingBox = std::make_shared<CBoundingBox>(Vec2(radius*2, radius*2));
 	//m_player->cCollision = std::make_shared<CCollision>(64);
 }
