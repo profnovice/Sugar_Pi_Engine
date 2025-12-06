@@ -11,6 +11,7 @@ class CTransform : public  Component
 public:
 	Vec2 pos = {0.0,0.0};
 	Vec2 velocity = { 0.0,0.0 };
+	Vec2 storedVelocity = { 0.0,0.0 };
 	Vec2 previousPos = { 0.0,0.0 };
 	float angle = 0.0f;
 	CTransform();

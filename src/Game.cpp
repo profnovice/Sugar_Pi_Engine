@@ -95,9 +95,11 @@ void Game::sMovement()
 		
 		entity->cTransform->previousPos = entity->cTransform->pos;
 		entity->cTransform->pos += entity->cTransform->velocity;
+		if (!entity->cTransform->velocity.x == 0 || !entity->cTransform->velocity.y == 0)
+		{
+			entity->cTransform->storedVelocity = entity->cTransform->velocity;
+		}
 		
-		
-
 		if (!entity->cBoundingBox){continue;}
 
 		//bounce off walls
@@ -260,7 +262,7 @@ void Game::sRender()
 		{
 			entity->cSprite->sprite.setPosition((entity->cTransform->pos));
 			
-			Vec2 rotator = Vec2(entity->cTransform->velocity);
+			Vec2 rotator = Vec2(entity->cTransform->storedVelocity);
 
 			rotator.normalize();
 			Vec2 flippedRotator = rotator;
