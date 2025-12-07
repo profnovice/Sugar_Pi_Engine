@@ -33,6 +33,7 @@ class Game
 	sf::Texture ghostTexture;
 	sf::Texture playerTexture;
 	sf::Texture backgroundTexture;
+	sf::Texture cursorTexture;
 
 	template <typename T>
 	void drawWrapper(T); //Not sure I'll need this just preemptive

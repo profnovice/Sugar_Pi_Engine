@@ -23,6 +23,7 @@ void Game::init(const std::string& config)
 	playerTexture.setSmooth(false);	
 	backgroundTexture = sf::Texture("assets/Castle_Wall_sdvtcgja_1K_BaseColor.jpg");
 	backgroundTexture.setRepeated(true);
+	cursorTexture = sf::Texture("assets/crosshair.png");
 	
 	updateWindow();
 	m_clock.restart();
@@ -86,7 +87,7 @@ void Game::setPaused(bool paused)
 void Game::updateWindow()
 {
 	m_window.create(sf::VideoMode({ (unsigned int)m_windowSize.x, (unsigned int)m_windowSize.y }), "SimEngine", sf::Style::Default);
-	//m_window.setMouseCursorVisible(false);
+	m_window.setMouseCursorVisible(false);
 	m_window.setFramerateLimit(m_frameLimit);
 	sf::Image iconImage("assets/SFMLPracticeIcon.png");
 	m_window.setIcon(iconImage);
@@ -335,6 +336,13 @@ void Game::sRender()
 	}
 	m_text.setString("SCORE: " + std::to_string(m_score));
 	m_window.draw(m_text);
+
+	sf::Sprite cursorSprite(cursorTexture);
+	cursorSprite.setOrigin({ cursorTexture.getSize().x / 2.0f, cursorTexture.getSize().y / 2.0f });
+	cursorSprite.setScale({ 0.5f,0.5f });
+	cursorSprite.setPosition((sf::Vector2f)(m_player->cInput->mousePosition));
+	m_window.draw(cursorSprite);
+
 	if (m_showImGui)
 	{
 		ImGui::SFML::Render(m_window);
