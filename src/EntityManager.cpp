@@ -30,7 +30,7 @@ EntityManager::EntityManager()
 }
 SimpEntPtr EntityManager::addEntity()
 {
-	SimpEntPtr e = std::shared_ptr<SimpleEntity>(new SimpleEntity(m_uniqueIdIndex++, "Default")); m_totalEntities++;
+	SimpEntPtr e = std::shared_ptr<SimpleEntity>(new SimpleEntity(m_uniqueIdIndex++, "Default")); 
 	m_queueToAdd.push_back(e);
 	return e;
 }
@@ -38,7 +38,7 @@ SimpEntPtr EntityManager::addEntity(const std::string & tag)
 {
 	//create a new entity obj
 	//SimpEntPtr e = std::make_shared<SimpleEntity>(m_uniqueIdIndex++, tag); m_totalEntities++;
-	SimpEntPtr e = std::shared_ptr<SimpleEntity>(new SimpleEntity(m_uniqueIdIndex++, tag)); m_totalEntities++;
+	SimpEntPtr e = std::shared_ptr<SimpleEntity>(new SimpleEntity(m_uniqueIdIndex++, tag)); 
 	
 	m_queueToAdd.push_back(e);
 	//return shared ptr of new entity
@@ -48,7 +48,7 @@ SimpEntPtr EntityManager::addEntity(const std::string & tag)
 
 SimpEntPtr EntityManager::addRec()
 {
-	SimpEntPtr e = std::shared_ptr<SimpleEntity>(new SimpleEntity(m_uniqueIdIndex++, "Rectangle")); m_totalEntities++;
+	SimpEntPtr e = std::shared_ptr<SimpleEntity>(new SimpleEntity(m_uniqueIdIndex++, "Rectangle")); 
 	e->cRectShape = std::make_shared<sf::RectangleShape>();
 	e->cRectShape->setSize({ 64,64 });
 	e->cRectShape->setPosition({ 64.0f * (recPlacement % 20),64 });
@@ -92,11 +92,12 @@ std::string const EntityManager::catEntVec(const EntityVec entities)
 
 void EntityManager::update()
 {
-	
+	int prevTotal = m_totalEntities;
 	for (auto & e : m_queueToAdd)
 	{//store in all entities vec
 		m_entities.push_back(e);
 		m_entityMap[e->m_tag].push_back(e);
+		++m_totalEntities;
 	}
 	int checkVec = 0;
 	int checkMap = 0;
@@ -110,6 +111,17 @@ void EntityManager::update()
 		std::cout << "EntityManager::update() - Mismatch in removed entity count between main vec and map vecs!" << std::endl;
 	}
 	m_totalEntities -= checkVec;
+	if(m_totalEntities != m_entities.size()){
+		std::cout << "EntityManager::update() - Mismatch in total entity count and main vec size!" << std::endl;
+	}
+	if(prevTotal > m_totalEntities){
+		//std::cout << "Entities removed: " << prevTotal - m_totalEntities << std::endl;
+		//std::cout << "Total Entities: " << m_totalEntities << std::endl;
+	}
+	else if(prevTotal < m_totalEntities){
+		//std::cout << "Entities added: " << m_totalEntities - prevTotal << std::endl;
+		//std::cout << "Total Entities: " << m_totalEntities << std::endl;
+	}
 	m_queueToAdd.clear();
 	//std::cout << m_totalEntities << ": Entities" << std::endl;
 	for (auto& e : m_entities)
