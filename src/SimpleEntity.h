@@ -12,6 +12,7 @@ class SimpleEntity
 	const size_t m_id = 0;
 	const std::string m_tag = "default";
 	bool m_alive = true;
+	unsigned int m_ttl = 0;
 	
 public:
 	
@@ -31,5 +32,6 @@ public:
 	const size_t getId() const;
 	void destroy();
 	
+	void setTTL(unsigned int time);
 
 };

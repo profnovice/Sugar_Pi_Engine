@@ -93,8 +93,6 @@ std::string const EntityManager::catEntVec(const EntityVec entities)
 void EntityManager::update()
 {
 	
-
-	
 	for (auto & e : m_queueToAdd)
 	{//store in all entities vec
 		m_entities.push_back(e);
@@ -114,6 +112,15 @@ void EntityManager::update()
 	m_totalEntities -= checkVec;
 	m_queueToAdd.clear();
 	//std::cout << m_totalEntities << ": Entities" << std::endl;
+	for (auto& e : m_entities)
+	{
+		if (e->m_ttl > 1) {
+			e->m_ttl -= 1;
+		}
+		else if (e->m_ttl == 1) {
+			e->destroy();
+		}
+	}
 	
 }
 

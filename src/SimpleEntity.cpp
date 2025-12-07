@@ -24,3 +24,8 @@ void SimpleEntity::destroy()
 {
 	m_alive = false;
 }
+
+void SimpleEntity::setTTL(unsigned int time)
+{
+	m_ttl = time;
+}
