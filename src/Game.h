@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <imgui-SFML.h>
+#include <imgui.h>
 #include "SimpleEntity.h"
 #include "EntityManager.h"
 #include "Vec2.h"
