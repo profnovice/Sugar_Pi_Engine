@@ -29,6 +29,7 @@ void Game::init(const std::string& config)
 	spawnPlayer();
 	//sf::Sprite ghostSprite(ghostTexture);
 	m_showColliders = false;
+	m_showImGui = true;
 
 }
 
@@ -55,7 +56,11 @@ void Game::run()
 		}
 		//sUpdatePreviousPositions();
 		sUserInput();
-		sUpdateImGui();
+		if(m_showImGui)
+		{
+			sUpdateImGui();
+		}
+		
 		sRender();
 		m_currentFrame++;//could be affected by pause
 		framesSinceClockTick++;
@@ -145,8 +150,10 @@ void Game::sUserInput()
 {
 	while (const std::optional event = m_window.pollEvent())
 	{
-		ImGui::SFML::ProcessEvent(m_window, *event);
-
+		if (m_showImGui)
+		{
+			ImGui::SFML::ProcessEvent(m_window, *event);
+		}
 		if (event->is<sf::Event::Closed>())
 		{
 			m_window.close();
@@ -301,7 +308,11 @@ void Game::sRender()
 			m_window.draw(entity->cBoundingBox->debugRec);
 		}
 	}
-	ImGui::SFML::Render(m_window);
+	if (m_showImGui)
+	{
+		ImGui::SFML::Render(m_window);
+	}
+	
 	m_window.display();
 }
 

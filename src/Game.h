@@ -20,7 +20,8 @@ class Game
 	int m_currentFrame = 0;
 	bool m_paused = false;
 	bool m_running = true;
-	bool m_showColliders;
+	bool m_showColliders = false;
+	bool m_showImGui = false;
 	Vec2 m_windowOffset;
 	Vec2 m_windowSize = Vec2(1920, 1080);
 	int m_frameLimit = 120;
