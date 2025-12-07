@@ -80,3 +80,13 @@ CHealth::CHealth(int maxH)
 	:maxHealth(maxH), currentHealth(maxH)
 {
 }
+
+CAI::CAI()
+	: isSeeking(false), cooldown(0), cooldownMax(60)
+{
+}
+
+CAI::CAI(int cdMax)
+	: isSeeking(false), cooldown(0), cooldownMax(cdMax)
+{
+}

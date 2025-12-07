@@ -91,8 +91,18 @@ public:
 
 class CHealth : public Component
 {
-	public:
+public:
 	int currentHealth = 100;
 	int maxHealth = 100;
 	CHealth(int maxH);
+};
+
+class CAI : public Component
+{
+public:
+	bool isSeeking = false;
+	int cooldown = 0;
+	int cooldownMax = 60;
+	CAI();
+	CAI(int cdMax);
 };
