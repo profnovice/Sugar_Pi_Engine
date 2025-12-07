@@ -15,6 +15,7 @@ void Game::init(const std::string& config)
 {
 	m_font.openFromFile("assets/8bitOperatorPlus8-Regular.ttf");
 	m_text.setFont(m_font);
+	m_text.setOutlineColor(sf::Color::Black);
 	
 	ghostTexture = sf::Texture("assets/ghost_01.png"); 
 	ghostTexture.setSmooth(false);
@@ -89,6 +90,7 @@ void Game::updateWindow()
 	m_window.setFramerateLimit(m_frameLimit);
 	sf::Image iconImage("assets/SFMLPracticeIcon.png");
 	m_window.setIcon(iconImage);
+	m_text.setPosition({ m_windowSize.x / 2.0f - 50.0f, 10.0f });
 
 }
 
@@ -145,6 +147,19 @@ void Game::sMovement()
 			entity->cTransform->pos.y = m_windowSize.y - entity->cBoundingBox->halfSize.y;
 		}
 		
+	}
+
+	for(auto & ghost : m_manager.getEntities("Ghost"))
+	{
+		if(!ghost->cTransform){continue;}
+		/* follow player
+		Vec2 toPlayer = m_player->cTransform->pos - ghost->cTransform->pos;
+		toPlayer.normalize();
+		ghost->cTransform->velocity = toPlayer * 2.0f;
+		*/
+		//if (!ghost->cHealth) { continue; }
+		//ghost->cTransform->velocity = ghost->cTransform->storedVelocity * (ghost->cHealth->currentHealth/ghost->cHealth->maxHealth);
+
 	}
 }
 void Game::sUserInput()
@@ -288,7 +303,7 @@ void Game::sRender()
 					entity->cSprite->sprite.getColor().r, 
 					entity->cSprite->sprite.getColor().g, 
 					entity->cSprite->sprite.getColor().b, 
-					255 *entity->cHealth->currentHealth/ entity->cHealth->maxHealth);
+					155 *entity->cHealth->currentHealth/ entity->cHealth->maxHealth +100);
 				entity->cSprite->sprite.setColor(correctedColor);
 			}
 			
@@ -318,6 +333,8 @@ void Game::sRender()
 			m_window.draw(entity->cBoundingBox->debugRec);
 		}
 	}
+	m_text.setString("SCORE: " + std::to_string(m_score));
+	m_window.draw(m_text);
 	if (m_showImGui)
 	{
 		ImGui::SFML::Render(m_window);
@@ -494,6 +511,48 @@ void Game::sCollision()
 
 void Game::sAABBCollision()
 {
+	for(auto& projectile : m_manager.getEntities("Projectile"))
+	{
+		if(!projectile->cTransform || !projectile->cBoundingBox){continue;}
+
+		/* // use if you want projectiles to despawn offscreen
+		if(projectile->cTransform->pos.x < -50.0f || projectile->cTransform->pos.x > m_windowSize.x + 50.0f ||
+		   projectile->cTransform->pos.y < -50.0f || projectile->cTransform->pos.y > m_windowSize.y + 50.0f)
+		{
+			projectile->destroy();
+		}
+		*/
+		for(auto& ghost : m_manager.getEntities("Ghost"))
+		{
+			if(projectile == ghost){continue;}
+			if(!ghost->cTransform || !ghost->cBoundingBox){continue;}
+			Vec2 currentOverlap = overlapAABB(
+				*projectile->cTransform,
+				*projectile->cBoundingBox,
+				*ghost->cTransform,
+				*ghost->cBoundingBox
+			);
+			if(currentOverlap.x > 0.0f && currentOverlap.y > 0.0f)
+			{
+				//std::cout << "Projectile hit Ghost!" << std::endl;
+				projectile->destroy();
+				if(ghost->cHealth)
+				{
+					ghost->cHealth->currentHealth -= 25;
+					ghost->cTransform->velocity = ghost->cTransform->velocity * ((float)ghost->cHealth->currentHealth / (float)ghost->cHealth->maxHealth);
+					if(ghost->cHealth->currentHealth <=0)
+					{
+						spawnExplosion(ghost);
+						ghost->destroy();
+						m_score += m_pointsPerEnemy;
+					}
+				}
+			}
+		}
+
+	}
+
+
 	for (auto& entityA : m_manager.getEntities())
 	{
 		if (!entityA->cBoundingBox || !entityA->cTransform) { continue; }
@@ -516,45 +575,7 @@ void Game::sAABBCollision()
 			//std::cout << "Current Overlap: " << currentOverlap.toString() << " Previous Overlap: " << previousOverlap.toString() << std::endl;
 			if(currentOverlap.x > 0.0f && currentOverlap.y > 0.0f)
 			{
-				if (entityA->getTag() == "Ghost" && entityB->getTag() == "Ghost")
-				{ 
-				}
-				else
-				{ 
-					//std::cout << "Resolving AABB collision between " << entityA->getTag() << " " << entityA->getId() << " and " << entityB->getTag() << " " << entityB->getId() << std::endl;
-					//std::cout << "Current Overlap: " << currentOverlap.toString() << " Previous Overlap: " << previousOverlap.toString() << std::endl;
-				}
-					
-				if (entityA->getTag() == "Projectile" && entityB->getTag() == "Ghost")
-				{
-					//std::cout << "Projectile hit Ghost!" << std::endl;
-					entityA->destroy();
-					if(entityB->cHealth)
-					{
-						entityB->cHealth->currentHealth -= 25;
-						if(entityB->cHealth->currentHealth <=0)
-						{
-							spawnExplosion(entityB);
-							entityB->destroy();
-						}
-					}
-					continue;
-				}
-				else if(entityB->getTag() == "Projectile" && entityA->getTag() == "Ghost")
-				{
-					//std::cout << "Projectile hit Ghost!" << std::endl;
-					entityB->destroy();
-					if (entityA->cHealth)
-					{
-						entityA->cHealth->currentHealth -= 25;
-						if (entityA->cHealth->currentHealth <= 0)
-						{
-							spawnExplosion(entityA);
-							entityA->destroy();
-						}
-					}
-					continue;
-				}
+				
 				/*
 				if(previousOverlap.x <= 0.0f && previousOverlap.y <= 0.0f)
 				{

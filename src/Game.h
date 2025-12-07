@@ -25,6 +25,8 @@ class Game
 	Vec2 m_windowOffset;
 	Vec2 m_windowSize = Vec2(1920, 1080);
 	int m_frameLimit = 120;
+	int m_pointsPerEnemy = 100;
+	int m_Score = 0;
 
 	sf::Clock m_clock;
 
