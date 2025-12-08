@@ -13,6 +13,7 @@ class SimpleEntity
 	const std::string m_tag = "default";
 	bool m_alive = true;
 	unsigned int m_ttl = 0;
+	unsigned int m_ttlMax = 0;
 	
 public:
 	
@@ -35,5 +36,7 @@ public:
 	void destroy();
 	
 	void setTTL(unsigned int time);
+	const unsigned int getTTL() const;
+	const unsigned int getTTLMax() const;
 
 };

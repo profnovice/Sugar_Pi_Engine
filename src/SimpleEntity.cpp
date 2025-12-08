@@ -1,7 +1,7 @@
 #include "SimpleEntity.h"
 
 SimpleEntity::SimpleEntity(size_t id, std::string tag)
-	: m_id(id), m_tag(tag), m_alive(true)
+	: m_id(id), m_tag(tag), m_alive(true), m_ttl(0), m_ttlMax(0)
 {
 }
 
@@ -28,4 +28,15 @@ void SimpleEntity::destroy()
 void SimpleEntity::setTTL(unsigned int time)
 {
 	m_ttl = time;
+	m_ttlMax = time;
+}
+
+const unsigned int SimpleEntity::getTTL() const
+{
+	return m_ttl;
+}
+
+const unsigned int SimpleEntity::getTTLMax() const
+{
+	return m_ttlMax;
 }
