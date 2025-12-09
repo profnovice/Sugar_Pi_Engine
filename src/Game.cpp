@@ -598,9 +598,9 @@ void Game::sAABBCollision()
 			if(projectile == ghost){continue;}
 			if(!ghost->cTransform || !ghost->cBoundingBox){continue;}
 			Vec2 currentOverlap = overlapAABB(
-				*projectile->cTransform,
+				projectile->cTransform->pos,
 				*projectile->cBoundingBox,
-				*ghost->cTransform,
+				ghost->cTransform->pos,
 				*ghost->cBoundingBox
 			);
 			if(currentOverlap.x > 0.0f && currentOverlap.y > 0.0f)
@@ -638,9 +638,9 @@ void Game::sAABBCollision()
 	{
 		if(!ghost->cTransform || !ghost->cBoundingBox){continue;}
 		Vec2 currentOverlap = overlapAABB(
-			*m_player->cTransform,
+			m_player->cTransform->pos,
 			*m_player->cBoundingBox,
-			*ghost->cTransform,
+			ghost->cTransform->pos,
 			*ghost->cBoundingBox
 		);
 		if (!playerHit && currentOverlap.x > 0.0f && currentOverlap.y > 0.0f)
@@ -661,9 +661,9 @@ void Game::sAABBCollision()
 	{
 		if(!points->cTransform || !points->cBoundingBox){continue;}
 		Vec2 currentOverlap = overlapAABB(
-			*m_player->cTransform,
+			m_player->cTransform->pos,
 			*m_player->cBoundingBox,
-			*points->cTransform,
+			points->cTransform->pos,
 			*points->cBoundingBox
 		);
 		if (currentOverlap.x > 0.0f && currentOverlap.y > 0.0f)
@@ -683,15 +683,15 @@ void Game::sAABBCollision()
 			if (entityA == entityB) { continue; }
 			if (!entityB->cBoundingBox || !entityB->cTransform) { continue; }
 			Vec2 currentOverlap = overlapAABB(
-				*entityA->cTransform,
+				entityA->cTransform->pos,
 				*entityA->cBoundingBox,
-				*entityB->cTransform,
+				entityB->cTransform->pos,
 				*entityB->cBoundingBox
 			);
 			Vec2 previousOverlap = overlapAABB(
-				CTransform{ entityA->cTransform->previousPos },
+				entityA->cTransform->previousPos,
 				*entityA->cBoundingBox,
-				CTransform{ entityB->cTransform->previousPos },
+				entityB->cTransform->previousPos,
 				*entityB->cBoundingBox
 			);
 			//std::cout << "Current Overlap: " << currentOverlap.toString() << " Previous Overlap: " << previousOverlap.toString() << std::endl;
@@ -861,11 +861,11 @@ void Game::spawnExplosion(SimpEntPtr entity)
 }
 
 
-Vec2 Game::overlapAABB(const CTransform& aTrans, const CBoundingBox& aBox, const CTransform& bTrans, const CBoundingBox& bBox)
+Vec2 Game::overlapAABB(const Vec2& aPos, const CBoundingBox& aBox, const Vec2& bPos, const CBoundingBox& bBox)
 {
 	Vec2 overlap(0.0f, 0.0f);
-	float deltaX = bTrans.pos.x - aTrans.pos.x;
-	float deltaY = bTrans.pos.y - aTrans.pos.y;
+	float deltaX = bPos.x - aPos.x;
+	float deltaY = bPos.y - aPos.y;
 	overlap.x = (aBox.halfSize.x + bBox.halfSize.x) - std::abs(deltaX);
 	overlap.y = (aBox.halfSize.y + bBox.halfSize.y) - std::abs(deltaY);
 	return overlap;
