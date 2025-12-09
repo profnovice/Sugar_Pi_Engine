@@ -29,6 +29,7 @@ class Game
 	int m_pointsPerEnemy = 100;
 	int m_Score = 0;
 	int m_lives = 3;
+	bool m_invincible = false;
 
 	sf::Clock m_clock;
 

@@ -62,10 +62,7 @@ void Game::run()
 		}
 		//sUpdatePreviousPositions();
 		sUserInput();
-		if(m_showImGui)
-		{
-			sUpdateImGui();
-		}
+		sUpdateImGui();
 		
 		sRender();
 		m_currentFrame++;//could be affected by pause
@@ -186,10 +183,7 @@ void Game::sUserInput()
 {
 	while (const std::optional event = m_window.pollEvent())
 	{
-		if (m_showImGui)
-		{
-			ImGui::SFML::ProcessEvent(m_window, *event);
-		}
+		ImGui::SFML::ProcessEvent(m_window, *event);
 		if (event->is<sf::Event::Closed>())
 		{
 			m_window.close();
@@ -370,10 +364,7 @@ void Game::sRender()
 	cursorSprite.setPosition((sf::Vector2f)(m_player->cInput->mousePosition));
 	m_window.draw(cursorSprite);
 
-	if (m_showImGui)
-	{
-		ImGui::SFML::Render(m_window);
-	}
+	ImGui::SFML::Render(m_window);
 	
 	m_window.display();
 }
@@ -654,7 +645,10 @@ void Game::sAABBCollision()
 		);
 		if (!playerHit && currentOverlap.x > 0.0f && currentOverlap.y > 0.0f)
 		{
-			-- m_lives;
+			if (!m_invincible)
+			{
+				--m_lives;
+			}
 			playerHit = true;
 			for(auto & g: m_manager.getEntities("Ghost"))
 			{
@@ -754,7 +748,28 @@ void Game::sAABBCollision()
 void Game::sUpdateImGui()
 {
 	ImGui::SFML::Update(m_window, m_clock.restart());
-	ImGui::ShowDemoWindow();
+
+	//ImGui::SetNextWindowSize(ImVec2(80, 60), ImGuiCond_Once);
+	
+	//ImGui::SetNextWindowPos();
+	
+	
+	ImGui::Begin("SHOW", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoDecoration);
+	ImGui::Checkbox("GUI", &m_showImGui);
+	//ImGui::SetWindowPos(ImVec2(m_windowSize.x - ImGui::GetWindowSize().x, m_windowSize.y - ImGui::GetWindowSize().y), ImGuiCond_FirstUseEver);
+	ImGui::SetWindowPos(ImVec2(m_windowSize.x - ImGui::GetWindowSize().x, m_windowSize.y - ImGui::GetWindowSize().y));
+	ImGui::End();
+
+	if (!m_showImGui) { return; }
+
+	ImGui::SetNextWindowSize(ImVec2(200, 500), ImGuiCond_Once);
+	ImGui::Begin("Settings",nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+	ImGui::Checkbox("Show Colliders", &m_showColliders);
+	ImGui::Checkbox("Invincible", &m_invincible);
+	ImGui::Separator();
+	ImGui::End();
+	
+	//ImGui::ShowDemoWindow();
 }
 
 
