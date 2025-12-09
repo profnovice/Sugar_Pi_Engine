@@ -1,6 +1,6 @@
 # Ongoing cross-platform game engine from scratch using CMake SFML Project Template
 
-Learning process with C++, SFML, CMake, etc.
+Learning process with C++, SFML, imgui-sfml, CMake, etc.
 
 ## General Architecture 
 
@@ -32,9 +32,10 @@ give them something to do.
 ### Areas:
 
 - git: workflows
-- docs: README and LICENSE etc.
+- docs: README and LICENSE, etc.
 - src: source code
-- assets: textures, config, .ttf etc. 
+- assets: textures, config, .ttf, etc.
+- tool: tools, libraries, build systems, etc.
 
 ### Creed: 
 
