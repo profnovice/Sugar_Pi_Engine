@@ -16,7 +16,7 @@ CTransform::~CTransform(){}
 
 std::string CTransform::toString() const
 {
-	return std::string("");
+	return std::string("Pos: " + pos.toString() + " Vel: " + velocity.toString() + " Angle: " + std::to_string(angle));
 }
 
 CDisplayTag::CDisplayTag(const sf::Font& font)
@@ -57,7 +57,17 @@ CShape::CShape(float radius, int edges, const sf::Color& fill, const sf::Color& 
 
 std::string CShape::toString() const
 {
-	return std::string("");
+	return std::string(
+		"radius: " + std::to_string(circle.getRadius()) +
+		"edges: " + std::to_string(circle.getPointCount()) +
+		"rgb fill: " + std::to_string(circle.getFillColor().r) + "," +
+		std::to_string(circle.getFillColor().g) + "," +
+		std::to_string(circle.getFillColor().b) +
+		"rgb outline: " + std::to_string(circle.getOutlineColor().r)
+		+ "," + std::to_string(circle.getOutlineColor().g) + "," +
+		std::to_string(circle.getOutlineColor().b) +
+		"thickness: " + std::to_string(circle.getOutlineThickness())
+	);	
 }
 
 CCollision::CCollision(float r)
@@ -65,7 +75,7 @@ CCollision::CCollision(float r)
 
 std::string CCollision::toString() const
 {
-	return std::string("");
+	return std::string("Radius: " + std::to_string(radius));
 }
 
 CSprite::CSprite(const sf::Texture& texture)
@@ -75,7 +85,10 @@ CSprite::CSprite(const sf::Texture& texture)
 }
 std::string CSprite::toString() const
 {
-	return std::string("");
+	return std::string(
+		"Texture Size: x:"  + std::to_string(sprite.getTextureRect().size.x) +
+		"y: " + std::to_string(sprite.getTextureRect().size.y)
+	);
 }
 
 CRidgedBody::CRidgedBody()
@@ -83,7 +96,14 @@ CRidgedBody::CRidgedBody()
 }
 std::string CRidgedBody::toString() const
 {
-	return std::string("");
+	return std::string(
+		"Mass: " + std::to_string(mass) +
+		" Drag: " + std::to_string(drag) +
+		" Angular Drag: " + std::to_string(angularDrag) +
+		" Use Gravity: " + (useGravity ? "true" : "false") +
+		" Velocity: " + velocity.toString() +
+		" Angular Velocity: " + angularVelocity.toString()
+	);
 }
 
 CInput::CInput()
@@ -91,7 +111,17 @@ CInput::CInput()
 }
 std::string CInput::toString() const
 {
-	return std::string("");
+	return std::string(
+		"Primary Action: " + std::string(primaryAction ? "true" : "false") +
+		" Secondary Action: " + std::string(secondaryAction ? "true" : "false") +
+		" Mouse Position: " + mousePosition.toString() +
+		" Up: " + std::string(up ? "true" : "false") +
+		" Down: " + std::string(down ? "true" : "false") +
+		" Left: " + std::string(left ? "true" : "false") +
+		" Right: " + std::string(right ? "true" : "false") +
+		" Input Angle: " + std::to_string(inputAngle) +
+		" Input Magnitude: " + std::to_string(inputMagnitude)
+	);
 }
 
 CBoundingBox::CBoundingBox(const Vec2& s)
@@ -104,7 +134,10 @@ CBoundingBox::CBoundingBox(const Vec2& s)
 }
 std::string CBoundingBox::toString() const
 {
-	return std::string("");
+	return std::string(
+		"Size: " + size.toString() +
+		" Half Size: " + halfSize.toString()
+	);
 }
 
 CHealth::CHealth(int maxH)
@@ -113,7 +146,10 @@ CHealth::CHealth(int maxH)
 }
 std::string CHealth::toString() const
 {
-	return std::string("");
+	return std::string(
+		"Current Health: " + std::to_string(currentHealth) +
+		" Max Health: " + std::to_string(maxHealth)
+	);
 }
 
 CAI::CAI()
@@ -127,5 +163,9 @@ CAI::CAI(int cdMax)
 }
 std::string CAI::toString() const
 {
-	return std::string("");
+	return std::string(
+		"Is Seeking: " + std::string(isSeeking ? "true" : "false") +
+		" Cooldown: " + std::to_string(cooldown) +
+		" Cooldown Max: " + std::to_string(cooldownMax)
+	);
 }
