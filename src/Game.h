@@ -6,6 +6,7 @@
 #include "EntityManager.h"
 #include "Vec2.h"
 #include <string>
+#include "AssetManager.h"
 
 
 
@@ -13,6 +14,7 @@ class Game
 {
 	sf::RenderWindow m_window;
 	EntityManager m_manager;
+	AssetManager m_assetManager;
 	sf::Font m_font;
 	sf::Text m_text;
 	sf::Text m_livesText;
@@ -32,11 +34,7 @@ class Game
 	bool m_invincible = false;
 
 	sf::Clock m_clock;
-
-	sf::Texture ghostTexture;
-	sf::Texture playerTexture;
 	sf::Texture backgroundTexture;
-	sf::Texture cursorTexture;
 
 	template <typename T>
 	void drawWrapper(T); //Not sure I'll need this just preemptive

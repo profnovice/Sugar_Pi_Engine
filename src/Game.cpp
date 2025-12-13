@@ -18,14 +18,14 @@ void Game::init(const std::string& config)
 	m_text.setOutlineColor(sf::Color::Black);
 	m_livesText.setFont(m_font);
 	m_livesText.setOutlineColor(sf::Color::Black);
-	
-	ghostTexture = sf::Texture("assets/ghost_01.png"); 
-	ghostTexture.setSmooth(false);
-	playerTexture = sf::Texture("assets/SimplePlayer.png");
-	playerTexture.setSmooth(false);	
+
 	backgroundTexture = sf::Texture("assets/Castle_Wall_sdvtcgja_1K_BaseColor.jpg");
 	backgroundTexture.setRepeated(true);
-	cursorTexture = sf::Texture("assets/crosshair.png");
+
+	m_assetManager.addFont("mainFont", "assets/8bitOperatorPlus8-Regular.ttf");
+	m_assetManager.addTexture("ghost", "assets/ghost_01.png");
+	m_assetManager.addTexture("player", "assets/SimplePlayer.png");
+	m_assetManager.addTexture("cursor", "assets/crosshair.png");
 	
 	updateWindow();
 	m_clock.restart();
@@ -358,8 +358,8 @@ void Game::sRender()
 	m_window.draw(m_text);
 	m_window.draw(m_livesText);
 
-	sf::Sprite cursorSprite(cursorTexture);
-	cursorSprite.setOrigin({ cursorTexture.getSize().x / 2.0f, cursorTexture.getSize().y / 2.0f });
+	sf::Sprite cursorSprite(m_assetManager.getTexture("cursor"));
+	cursorSprite.setOrigin({ m_assetManager.getTexture("cursor").getSize().x / 2.0f, m_assetManager.getTexture("cursor").getSize().y / 2.0f });
 	cursorSprite.setScale({ 0.5f,0.5f });
 	cursorSprite.setPosition((sf::Vector2f)(m_player->cInput->mousePosition));
 	m_window.draw(cursorSprite);
@@ -484,7 +484,7 @@ void Game::sTestAABB()
 	entityA->cTransform->velocity = Vec2(0.5f, .1);
 	//entityA->cShape = std::make_shared<CShape>(radius, points, sf::Color::Yellow, sf::Color::Red, 3.0f);
 	//entityA->cShape->circle.setRotation(sf::degrees(45.0f));
-	entityA->cSprite = std::make_shared<CSprite>(ghostTexture);
+	entityA->cSprite = std::make_shared<CSprite>(m_assetManager.getTexture("ghost"));
 	entityA->cSprite->sprite.setColor(sf::Color::Yellow);
 	entityA->cBoundingBox = std::make_shared<CBoundingBox>(Vec2(boxSize, boxSize));
 	entityA->cHealth = std::make_shared<CHealth>(100);
@@ -495,7 +495,7 @@ void Game::sTestAABB()
 	entityB->cTransform->velocity = Vec2(-0.5f, 0);
 	//entityB->cShape = std::make_shared<CShape>(radius, points, sf::Color::Cyan, sf::Color::Red, 3.0f);
 	//entityB->cShape->circle.setRotation(sf::degrees(45.0f));
-	entityB->cSprite = std::make_shared<CSprite>(ghostTexture);
+	entityB->cSprite = std::make_shared<CSprite>(m_assetManager.getTexture("ghost"));
 	entityB->cSprite->sprite.setColor(sf::Color::Cyan);
 	entityB->cBoundingBox = std::make_shared<CBoundingBox>(Vec2(boxSize, boxSize));
 	entityB->cHealth = std::make_shared<CHealth>(100);
@@ -507,7 +507,7 @@ void Game::sTestAABB()
 	entityC->cTransform->velocity = Vec2(.1, 0.5f);
 	//entityC->cShape = std::make_shared<CShape>(radius, points, sf::Color::Magenta, sf::Color::Red, 3.0f);
 	//entityC->cShape->circle.setRotation(sf::degrees(45.0f));
-	entityC->cSprite = std::make_shared<CSprite>(ghostTexture);
+	entityC->cSprite = std::make_shared<CSprite>(m_assetManager.getTexture("ghost"));
 	entityC->cSprite->sprite.setColor(sf::Color::Magenta);
 	entityC->cBoundingBox = std::make_shared<CBoundingBox>(Vec2(boxSize, boxSize));
 	entityC->cHealth = std::make_shared<CHealth>(100);
@@ -517,7 +517,7 @@ void Game::sTestAABB()
 	entityD->cTransform->velocity = Vec2(0, -0.5f);
 	//entityD->cShape = std::make_shared<CShape>(radius, points, sf::Color::Green, sf::Color::Red, 3.0f);
 	//entityD->cShape->circle.setRotation(sf::degrees(45.0f));
-	entityD->cSprite = std::make_shared<CSprite>(ghostTexture);
+	entityD->cSprite = std::make_shared<CSprite>(m_assetManager.getTexture("ghost"));
 	entityD->cSprite->sprite.setColor(sf::Color::Green);
 	entityD->cBoundingBox = std::make_shared<CBoundingBox>(Vec2(boxSize, boxSize));
 	entityD->cHealth = std::make_shared<CHealth>(100);
@@ -528,7 +528,7 @@ void Game::sTestAABB()
 	entityE->cTransform->velocity = Vec2(0.5f, 0.5f);
 	//entityE->cShape = std::make_shared<CShape>(radius, points, sf::Color::White, sf::Color::Red, 3.0f);
 	//entityE->cShape->circle.setRotation(sf::degrees(45.0f));
-	entityE->cSprite = std::make_shared<CSprite>(ghostTexture);
+	entityE->cSprite = std::make_shared<CSprite>(m_assetManager.getTexture("ghost"));
 	entityE->cSprite->sprite.setColor(sf::Color::White);
 	entityE->cBoundingBox = std::make_shared<CBoundingBox>(Vec2(boxSize, boxSize));
 	entityE->cHealth = std::make_shared<CHealth>(100);
@@ -538,7 +538,7 @@ void Game::sTestAABB()
 	entityF->cTransform->velocity = Vec2(-0.5f, -0.5f);
 	//entityF->cShape = std::make_shared<CShape>(radius, points, sf::Color::Black, sf::Color::Red, 3.0f);
 	//entityF->cShape->circle.setRotation(sf::degrees(45.0f));
-	entityF->cSprite = std::make_shared<CSprite>(ghostTexture);
+	entityF->cSprite = std::make_shared<CSprite>(m_assetManager.getTexture("ghost"));
 	entityF->cSprite->sprite.setColor(sf::Color::Red);
 	entityF->cBoundingBox = std::make_shared<CBoundingBox>(Vec2(boxSize, boxSize));
 	entityF->cHealth = std::make_shared<CHealth>(100);
@@ -782,7 +782,7 @@ void Game::spawnPlayer()
 	//m_player->cShape = std::make_shared<CShape>(64);
 	//m_player->cShape = std::make_shared<CShape>(std::sqrt(radius * radius + radius * radius), 4, sf::Color::Blue, sf::Color::Red, 3.0f);
 	//m_player->cShape->circle.setRotation(sf::degrees(45.0f));
-	m_player->cSprite = std::make_shared<CSprite>(playerTexture);
+	m_player->cSprite = std::make_shared<CSprite>(m_assetManager.getTexture("player"));
 
 	//m_player->cSprite->sprite.setColor(sf::Color(255,255,255));
 	m_player->cBoundingBox = std::make_shared<CBoundingBox>(Vec2(radius*2, radius*2));
@@ -798,7 +798,7 @@ void Game::spawnEnemy(Vec2 pos, Vec2 vel, sf::Color color)
 	//enemy->setTTL(2400);
 	enemy->cTransform = std::make_shared<CTransform>(pos);
 	enemy->cTransform->velocity = vel;
-	enemy->cSprite = std::make_shared<CSprite>(ghostTexture);
+	enemy->cSprite = std::make_shared<CSprite>(m_assetManager.getTexture("ghost"));
 	enemy->cSprite->sprite.setColor(color);
 	enemy->cBoundingBox = std::make_shared<CBoundingBox>(Vec2(boxSize, boxSize));
 	enemy->cHealth = std::make_shared<CHealth>(100);
