@@ -34,7 +34,6 @@ class Game
 	bool m_invincible = false;
 
 	sf::Clock m_clock;
-	sf::Texture backgroundTexture;
 
 	template <typename T>
 	void drawWrapper(T); //Not sure I'll need this just preemptive

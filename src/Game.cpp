@@ -19,11 +19,11 @@ void Game::init(const std::string& config)
 	m_livesText.setFont(m_font);
 	m_livesText.setOutlineColor(sf::Color::Black);
 
-	backgroundTexture = sf::Texture("assets/Castle_Wall_sdvtcgja_1K_BaseColor.jpg");
+	auto& backgroundTexture = m_assetManager.addTexture("Castle_Wall", "assets/Castle_Wall_sdvtcgja_1K_BaseColor.jpg");
 	backgroundTexture.setRepeated(true);
-
+	
 	m_assetManager.addFont("mainFont", "assets/8bitOperatorPlus8-Regular.ttf");
-	m_assetManager.addTexture("ghost", "assets/ghost_01.png");
+	m_assetManager.addTexture("ghost", "assets/ghost_01.png").setSmooth(false);
 	m_assetManager.addTexture("player", "assets/SimplePlayer.png");
 	m_assetManager.addTexture("cursor", "assets/crosshair.png");
 	
@@ -295,7 +295,7 @@ void Game::sUserInput()
 void Game::sRender()
 {
 	m_window.clear();
-	sf::Sprite background = sf::Sprite(backgroundTexture);
+	sf::Sprite background = sf::Sprite(m_assetManager.getTexture("Castle_Wall"));
 	background.scale({ .5f, .5f });
 	background.setTextureRect(sf::IntRect({0,0}, { 4096, 4096 }));
 	
