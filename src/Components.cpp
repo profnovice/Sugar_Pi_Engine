@@ -14,11 +14,6 @@ CTransform::CTransform(const Vec2 inPos, const Vec2 inVelocity, float a)
 
 CTransform::~CTransform(){}
 
-void CTransform::print()
-{
-	std::cout << "Pos: " << pos.x << ", " << pos.y << " Vel: " << velocity.x << ", " << velocity.y << std::endl;
-}
-
 std::string CTransform::toString() const
 {
 	return std::string("");

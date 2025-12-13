@@ -22,7 +22,6 @@ public:
 	CTransform(const Vec2 inPos, const Vec2 inVelocity);
 	CTransform(const Vec2 inPos, const Vec2 inVelocity, float a);
 	~CTransform();
-	void print();
 	std::string toString() const;
 };
 
