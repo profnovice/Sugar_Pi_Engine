@@ -45,7 +45,7 @@ FetchContent_Declare(ImGui-SFML
 FetchContent_MakeAvailable(ImGui-SFML)
 
 
-add_executable(main src/main.cpp "src/Vec2.cpp" "src/Vec2.h" "src/Components.h" "src/Components.cpp" "src/SimpleEntity.cpp" "src/SimpleEntity.h" "src/EntityManager.cpp" "src/EntityManager.h" "src/Game.cpp" "src/Game.h" "src/AssetManager.h" "src/AssetManager.cpp" "src/Action.cpp" "src/Action.h" "src/GameEngine.cpp" "src/GameEngine.h" "src/Scene.h" "src/Scene.cpp" "src/Scene_Menu.cpp" "src/Scene_Menu.h")
+add_executable(main src/main.cpp "src/Vec2.cpp" "src/Vec2.h" "src/Components.h" "src/Components.cpp" "src/SimpleEntity.cpp" "src/SimpleEntity.h" "src/EntityManager.cpp" "src/EntityManager.h" "src/Game.cpp" "src/Game.h" "src/AssetManager.h" "src/AssetManager.cpp" "src/Action.cpp" "src/Action.h" "src/GameEngine.cpp" "src/GameEngine.h" "src/Scene.h" "src/Scene.cpp" "src/Scene_Menu.cpp" "src/Scene_Menu.h" "src/Scene_Play.cpp" "src/Scene_Play.h")
 target_compile_features(main PRIVATE cxx_std_17)
 target_link_libraries(main PRIVATE SFML::Graphics ImGui-SFML::ImGui-SFML)
 
