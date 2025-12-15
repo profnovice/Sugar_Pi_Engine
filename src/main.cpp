@@ -8,6 +8,9 @@
 #include "SimpleEntity.h"
 #include "EntityManager.h"
 #include "Game.h"
+#include "GameEngine.h"
+#include "Action.h"
+#include "Scene_Menu.h"
 
 
 template <typename T>
@@ -19,10 +22,14 @@ int main()
 {
     std::string config = std::string("assets/config.txt");
     
+	GameEngine gameEngine(config);
+	gameEngine.run();
+    /*
     while (true)
     {
         Game game(config);
         game.run();
     }
+    */
     return 0;
 }
