@@ -5,15 +5,36 @@ GameEngine::GameEngine(const std::string& config) {
 }
 
 void GameEngine::init(const std::string& config) {
-	//create window
+	updateWindow();
+	loadAssets(config);
+	createScenes();
+}
+
+void GameEngine::updateWindow()
+{
 	m_window.create(sf::VideoMode({ 800, 600 }), "Game Engine", sf::Style::Default);
 	m_window.setFramerateLimit(60);
 	m_window.setKeyRepeatEnabled(false);
-	//load assets
-	//load scenes
+	sf::Image iconImage("assets/SFMLPracticeIcon.png");
+	m_window.setIcon(iconImage);
+}
+
+void GameEngine::createScenes()
+{
 	m_scenes["menu"] = std::make_unique<Scene_Menu>();
 	m_scenes["menu"]->init();
-	
+}
+
+void GameEngine::loadAssets(const std::string& config)
+{
+	auto& backgroundTexture = m_assetManager.addTexture("Castle_Wall", "assets/Castle_Wall_sdvtcgja_1K_BaseColor.jpg");
+	backgroundTexture.setRepeated(true);
+
+	m_assetManager.addFont("mainFont", "assets/8bitOperatorPlus8-Regular.ttf");
+	m_assetManager.addTexture("ghost", "assets/ghost_01.png").setSmooth(false);
+	m_assetManager.addTexture("player", "assets/SimplePlayer.png");
+	m_assetManager.addTexture("cursor", "assets/crosshair.png");
+
 }
 
 void GameEngine::run() {

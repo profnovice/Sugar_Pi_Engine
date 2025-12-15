@@ -14,6 +14,9 @@ class GameEngine {
 	void init(const std::string& config);
 	void sUserInput();
 	Scene& getCurrentScene();
+	void updateWindow();
+	void createScenes();
+	void loadAssets(const std::string& config);
 
 public:
 
