@@ -2,11 +2,15 @@
 
 void Scene_Menu::init()
 {
+	assignActions();
+}
+
+void Scene_Menu::assignActions()
+{
 	registerAction(sf::Keyboard::Scancode::Space, "SELECT");
 	registerAction(sf::Keyboard::Scancode::Escape, "BACK");
 	registerAction(sf::Keyboard::Scancode::W, "UP");
 	registerAction(sf::Keyboard::Scancode::S, "DOWN");
-
 }
 
 void Scene_Menu::sDoAction(const Action& action) 

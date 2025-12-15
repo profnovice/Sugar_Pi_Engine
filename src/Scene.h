@@ -8,14 +8,15 @@
 typedef std::unordered_map<sf::Keyboard::Scancode, std::string> InputMap;
 
 class Scene {
-	EntityManager m_entityManager;
 	size_t m_currentFrame = 0;
 	InputMap m_inputMap;
 	bool m_paused = false;
 	bool m_hasEnded = false;
 
 protected:
+	EntityManager m_entityManager;
 	void registerAction(sf::Keyboard::Scancode code, std::string name);
+	virtual void assignActions() = 0;
 
 public:
 	Scene();
