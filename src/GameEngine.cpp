@@ -50,6 +50,14 @@ void GameEngine::sUserInput()
 			}
 			getCurrentScene().sDoAction(Action(getCurrentScene().getInputMap().at(keyPressed->scancode), "PRESSED"));
 		}
+		else if( const auto* keyReleased = event->getIf<sf::Event::KeyReleased>())
+		{
+			if(getCurrentScene().getInputMap().find(keyReleased->scancode) == getCurrentScene().getInputMap().end())
+			{
+				continue;
+			}
+			getCurrentScene().sDoAction(Action(getCurrentScene().getInputMap().at(keyReleased->scancode), "RELEASED"));
+		}
 
 
 	}
