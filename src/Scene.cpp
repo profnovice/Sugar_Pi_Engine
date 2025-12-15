@@ -1,5 +1,7 @@
 #include "Scene.h"
 
+Scene::Scene() {}
+
 void Scene::registerAction(sf::Keyboard::Scancode code, std::string name){
 	m_inputMap[code] = name;
 }

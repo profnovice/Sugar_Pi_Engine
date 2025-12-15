@@ -14,12 +14,15 @@ class Scene {
 	bool m_paused = false;
 	bool m_hasEnded = false;
 
+protected:
+	void registerAction(sf::Keyboard::Scancode code, std::string name);
+
 public:
+	Scene();
+	virtual void init() = 0;
 	virtual void update() = 0;
 	virtual void sDoAction(Action& action) = 0;
 	virtual void sRender(sf::RenderWindow& window) = 0;
-
-	void registerAction(sf::Keyboard::Scancode code, std::string name);
 	
 	const InputMap& getInputMap() const;
 
