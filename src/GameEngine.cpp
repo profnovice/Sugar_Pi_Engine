@@ -23,6 +23,8 @@ void GameEngine::createScenes()
 {
 	m_scenes["menu"] = std::make_unique<Scene_Menu>();
 	m_scenes["menu"]->init();
+	m_scenes["play"] = std::make_unique<Scene_Play>();
+	m_scenes["play"]->init();
 }
 
 void GameEngine::loadAssets(const std::string& config)
@@ -38,7 +40,7 @@ void GameEngine::loadAssets(const std::string& config)
 }
 
 void GameEngine::run() {
-	m_currentScene = "menu";
+	m_currentScene = "play";
 	std::cout << "Game Engine Running..." << std::endl;
 	while (m_running) {
 		sUserInput();

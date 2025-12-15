@@ -4,6 +4,7 @@
 #include "AssetManager.h"
 #include <fstream>
 #include "Scene_Menu.h"
+#include "Scene_Play.h"
 
 class GameEngine {
 	std::unordered_map<std::string, std::unique_ptr<Scene>> m_scenes;
