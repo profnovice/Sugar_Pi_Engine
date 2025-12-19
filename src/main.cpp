@@ -1,16 +1,12 @@
+#pragma once
 #include <SFML/Graphics.hpp>//Simple Fast Multi-media Library
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <memory>
-#include "Vec2.h"
-#include "Components.h"
-#include "SimpleEntity.h"
-#include "EntityManager.h"
 #include "Game.h"
 #include "GameEngine.h"
-#include "Action.h"
-#include "Scene_Menu.h"
+
 
 
 template <typename T>
