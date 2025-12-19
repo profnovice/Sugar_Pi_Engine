@@ -117,3 +117,22 @@ public:
 	CAI(int cdMax);
 	std::string toString() const;
 };
+
+class CButton : public Component
+{
+	public:
+	sf::RectangleShape shape;
+	sf::Text text;
+	CButton(const sf::Font& font);
+	CButton(const sf::Vector2f& size, const sf::Font& font, const std::string& str);
+	std::string toString() const;
+};
+class CUIElement : public Component
+{
+public:
+	Vec2 anchorPoint;
+	Vec2 offset;
+	Vec2 scale;
+	CUIElement();
+	std::string toString() const;
+};

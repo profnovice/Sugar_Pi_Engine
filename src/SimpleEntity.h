@@ -29,6 +29,8 @@ public:
 	std::shared_ptr<CBoundingBox> cBoundingBox;
 	std::shared_ptr<CHealth> cHealth;
 	std::shared_ptr<CAI> cAI;
+	std::shared_ptr<CUIElement> cUIElement;
+	std::shared_ptr<CButton> cButton;
 
 	bool isAlive() const;
 	const std::string& getTag() const;

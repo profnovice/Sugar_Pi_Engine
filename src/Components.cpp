@@ -169,3 +169,41 @@ std::string CAI::toString() const
 		" Cooldown Max: " + std::to_string(cooldownMax)
 	);
 }
+
+CUIElement::CUIElement()
+	:anchorPoint({ 0.0f,0.0f }), offset({ 0.0f,0.0f }), scale({ 1.0f,1.0f })
+{
+}
+std::string CUIElement::toString() const
+{
+	return std::string(
+		"Anchor Point: " + anchorPoint.toString() +
+		" Offset: " + offset.toString() +
+		" Scale: " + scale.toString()
+	);
+}
+
+CButton::CButton(const sf::Font& font)
+	:shape(sf::RectangleShape()), text(sf::Text(font))
+{
+}
+
+CButton::CButton(const sf::Vector2f& size, const sf::Font& font, const std::string& str)
+	:shape(sf::RectangleShape(size)), text(sf::Text(font))
+{
+	text.setString(str);
+	shape.setFillColor(sf::Color::White);
+	shape.setOutlineColor(sf::Color::Black);
+	shape.setOutlineThickness(1.0f);
+	text.setFillColor(sf::Color::Black);
+}
+
+std::string CButton::toString() const
+{
+	return std::string(
+		"Shape Size: " + std::to_string(shape.getSize().x) + "," + std::to_string(shape.getSize().y) +
+		" Text: " + text.getString().toAnsiString()
+	);
+}
+
+
