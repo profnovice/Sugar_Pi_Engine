@@ -3,6 +3,7 @@
 #include "UIElement.h"
 #include <memory>
 #include <vector>
+#include <algorithm>
 
 typedef std::shared_ptr<UIElement> UIElementPtr;
 typedef std::vector<UIElementPtr> UIElementVec;
