@@ -1,4 +1,3 @@
-#pragma once
 #include "GameEngine.h"
 
 GameEngine::GameEngine(const std::string& config) {

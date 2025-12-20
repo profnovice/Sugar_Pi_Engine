@@ -1,4 +1,3 @@
-#pragma once
 #include <SFML/Graphics.hpp>//Simple Fast Multi-media Library
 #include <iostream>
 #include <string>

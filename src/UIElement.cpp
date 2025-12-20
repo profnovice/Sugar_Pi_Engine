@@ -1,4 +1,3 @@
-#pragma once
 #include "UIElement.h"
 
 UIElement::UIElement(size_t id, std::string tag)
