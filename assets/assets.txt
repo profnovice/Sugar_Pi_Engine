@@ -1,0 +1,4 @@
+Texture	ghost assets/ghost_01.png
+Texture player assets/SimplePlayer.png
+Texture cursor assets/crosshair.png
+Font mainFont assets/8bitOperatorPlus8-Regular.ttf
