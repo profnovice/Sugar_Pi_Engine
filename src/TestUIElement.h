@@ -1,7 +1,5 @@
 #pragma once
 #include "UIElement.h"
-#include <sfml/Graphics.hpp>
-
 class TestUIElement : public UIElement
 {
 protected:
