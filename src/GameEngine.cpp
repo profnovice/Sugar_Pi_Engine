@@ -5,8 +5,13 @@ GameEngine::GameEngine(const std::string& config) {
 }
 
 void GameEngine::init(const std::string& config) {
+	std::ifstream fin(config);
+	std::string windowPath;
+	fin >> windowPath;
+	std::string assetPath;
+	fin >> assetPath;
 	updateWindow();
-	loadAssets(config);
+	loadAssets(assetPath);
 	createScenes();
 }
 
@@ -29,18 +34,29 @@ void GameEngine::createScenes()
 
 void GameEngine::loadAssets(const std::string& config)
 {
-	auto& backgroundTexture = m_assetManager.addTexture("Castle_Wall", "assets/Castle_Wall_sdvtcgja_1K_BaseColor.jpg");
-	backgroundTexture.setRepeated(true);
+	std::ifstream fin(config);
+	std::string type;
+	while (!fin.eof())
+	{
+		fin >> type;
+		if (type == "Texture")
+		{
+			std::string name, path;
+			fin >> name >> path;
+			m_assetManager.addTexture(name, path);
+		}
+		else if (type == "Font")
+		{
+			std::string name, path;
+			fin >> name >> path;
+			m_assetManager.addFont(name, path);
+		}
 
-	m_assetManager.addFont("mainFont", "assets/8bitOperatorPlus8-Regular.ttf");
-	m_assetManager.addTexture("ghost", "assets/ghost_01.png").setSmooth(false);
-	m_assetManager.addTexture("player", "assets/SimplePlayer.png");
-	m_assetManager.addTexture("cursor", "assets/crosshair.png");
-
+	}
 }
 
 void GameEngine::run() {
-	m_currentScene = "menu";
+	m_currentScene = "play";
 	std::cout << "Game Engine Running..." << std::endl;
 	while (m_running) {
 		sUserInput();
