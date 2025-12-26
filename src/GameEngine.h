@@ -4,6 +4,8 @@
 #include "AssetManager.h"
 #include <fstream>
 #include "Scene.h"
+#include "Scene_Play.h"
+#include "Scene_Menu.h"
 
 class GameEngine 
 {

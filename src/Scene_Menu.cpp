@@ -1,4 +1,4 @@
-#include "Scene.h"
+#include "Scene_Menu.h"
 
 void Scene_Menu::init()
 {
